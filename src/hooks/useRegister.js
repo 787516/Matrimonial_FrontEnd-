@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { register as registerApi } from '../api/auth';
+import {registerUserApi } from '../api/auth';
 
 const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -9,7 +9,7 @@ const useRegister = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await registerApi(userData);
+      const response = await registerUserApi(userData);
       return response.data;
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');

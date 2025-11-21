@@ -4,6 +4,7 @@ import React from 'react'
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+  
   const [userProfile, setUserProfile] = useState(null);
   const [preferences, setPreferences] = useState(null);
   const [loading, setLoading] = useState(false);

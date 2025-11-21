@@ -1,18 +1,18 @@
 import React from 'react'
 import './App.css'
 import { AuthProvider } from './context/AuthContext'
-import { UserProvider } from './context/UserContext'
-import { ChatProvider } from './context/ChatContext'
+//import { UserProvider } from './context/UserContext'
+import { SocketContextProvider } from "./context/SocketContext.jsx";
 import AppRoutes from './routes/AppRoutes'
 
 function App() {
   return (
     <AuthProvider>
-      <UserProvider>
-        <ChatProvider>
+      {/* <UserProvider> */}
+         <SocketContextProvider>
           <AppRoutes />
-        </ChatProvider>
-      </UserProvider>
+        </SocketContextProvider>
+      {/* </UserProvider> */}
     </AuthProvider>
   )
 }

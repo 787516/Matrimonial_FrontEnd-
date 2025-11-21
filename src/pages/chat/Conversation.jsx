@@ -1,29 +1,22 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import MessageItem from '../../components/chat/MessageItem';
-import ChatBox from '../../components/chat/ChatBox';
+import MessageContainer from '../../components/chat/messages/MessageContainer';
+import Sidebar from '../../components/chat/sidebar Messages/Sidebar';
 import React from 'react';
 
 const Conversation = () => {
   const { conversationId } = useParams();
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    // Fetch messages for this conversation
-  }, [conversationId]);
-
-  const handleSendMessage = (convId, message) => {
-    // Send message API call
-  };
 
   return (
-    <div className="conversation-page">
-      <div className="messages-list">
-        {messages.map((msg) => (
-          <MessageItem key={msg.id} message={msg} />
-        ))}
+    <div className='flex h-screen w-full bg-slate-900'>
+      {/* Sidebar - Conversations List */}
+      <div className='w-full md:w-96 border-r border-slate-700 overflow-hidden'>
+        <Sidebar />
       </div>
-      <ChatBox conversationId={conversationId} onSendMessage={handleSendMessage} />
+      
+      {/* Message Container - Chat Area */}
+      <div className='hidden md:flex flex-1 bg-slate-900 overflow-hidden'>
+        <MessageContainer />
+      </div>
     </div>
   );
 };

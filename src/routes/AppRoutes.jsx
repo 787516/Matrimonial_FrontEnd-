@@ -5,7 +5,7 @@ import React from 'react'
 import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import PublicLayout from '../layouts/PublicLayout';
-import ProtectedRoute from '../components/common/ProtectedRoute';
+import ProtectedRoute from './ProtectedRoute.jsx';
 
 // Auth Pages
 import Login from '../pages/auth/Login';
@@ -13,7 +13,7 @@ import Register from '../pages/auth/OTPVerify';
 import OTPVerify from '../pages/auth/OTPVerify';
 import ForgotPassword from '../pages/auth/ForgotPassword';
 import ResetPassword from '../pages/auth/ResetPassword';
-
+ 
 // Dashboard Pages
 import Dashboard from '../pages/dashboard/Dashboard';
 import Matches from '../pages/dashboard/Matches';
@@ -46,8 +46,7 @@ import Landing from '../pages/home/Landing';
 import AboutUs from '../pages/home/AboutUs';
 
 const AppRoutes = () => {
-  const [isAuthenticated] = useState(!!localStorage.getItem('authToken'));
-
+ 
   return (
     <Routes>
       {/* Public Routes */}
@@ -122,7 +121,7 @@ const AppRoutes = () => {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Dashboard />
             </DashboardLayout>
@@ -132,7 +131,7 @@ const AppRoutes = () => {
       <Route
         path="/matches"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Matches />
             </DashboardLayout>
@@ -142,7 +141,7 @@ const AppRoutes = () => {
       <Route
         path="/profile/:userId"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <ViewProfile />
             </DashboardLayout>
@@ -152,7 +151,7 @@ const AppRoutes = () => {
       <Route
         path="/profile/edit"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <EditProfile />
             </DashboardLayout>
@@ -162,7 +161,7 @@ const AppRoutes = () => {
       <Route
         path="/preferences"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Preferences />
             </DashboardLayout>
@@ -172,7 +171,7 @@ const AppRoutes = () => {
       <Route
         path="/gallery"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <GalleryUpload />
             </DashboardLayout>
@@ -184,7 +183,7 @@ const AppRoutes = () => {
       <Route
         path="/search"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Search />
             </DashboardLayout>
@@ -196,7 +195,7 @@ const AppRoutes = () => {
       <Route
         path="/chat"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Chat />
             </DashboardLayout>
@@ -206,7 +205,7 @@ const AppRoutes = () => {
       <Route
         path="/chat/:conversationId"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Conversation />
             </DashboardLayout>
@@ -218,7 +217,7 @@ const AppRoutes = () => {
       <Route
         path="/plans"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Plans />
             </DashboardLayout>
@@ -228,7 +227,7 @@ const AppRoutes = () => {
       <Route
         path="/payment/success"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <PaymentSuccess />
             </DashboardLayout>
@@ -238,7 +237,7 @@ const AppRoutes = () => {
       <Route
         path="/payment/failed"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <PaymentFailed />
             </DashboardLayout>
@@ -250,7 +249,7 @@ const AppRoutes = () => {
       <Route
         path="/settings"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Settings />
             </DashboardLayout>
@@ -260,7 +259,7 @@ const AppRoutes = () => {
       <Route
         path="/privacy"
         element={
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ProtectedRoute>
             <DashboardLayout>
               <Privacy />
             </DashboardLayout>

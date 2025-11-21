@@ -1,19 +1,22 @@
-import { useCallback } from 'react';
-import useAuth from './useAuth';
+import { useCallback, useState } from "react";
+import { useAuthContext } from "../context/AuthContext";
 
 const useLogout = () => {
-  const { logout } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { logoutUser } = useAuthContext();
 
-  const handleLogout = useCallback(async () => {
+  const logout = useCallback(async () => {
+    setLoading(true);
     try {
-      logout();
-      window.location.href = '/login';
+      logoutUser();
+      window.location.href = "/login";
     } catch (err) {
-      console.error('Logout failed:', err);
+      console.error("Logout failed:", err);
+      setLoading(false);
     }
-  }, [logout]);
+  }, [logoutUser]);
 
-  return { logout: handleLogout };
+  return { loading, logout };
 };
 
 export default useLogout;

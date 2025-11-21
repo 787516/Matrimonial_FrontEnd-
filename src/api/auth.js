@@ -1,25 +1,42 @@
 import axiosInstance from './axiosInstance';
 
-export const login = (email, password) => {
-  return axiosInstance.post('/auth/login', { email, password });
+// src/api/auth.js
+import axios from "axios";
+
+const API = "http://localhost:1818/api";  // change base URL if needed
+
+// REGISTER
+export const registerUserApi = async (formData) => {
+  const res = await axios.post(`${API}/auth/register`, formData);
+  return res.data;
 };
 
-export const register = (userData) => {
-  return axiosInstance.post('/auth/register', userData);
+// LOGIN
+export const loginUserApi = async (formData) => {
+  const res = await axios.post(`${API}/auth/login`, formData);
+  return res.data;
 };
 
-export const verifyOTP = (email, otp) => {
-  return axiosInstance.post('/auth/verify-otp', { email, otp });
+// VERIFY OTP
+export const verifyOtpApi = async (formData) => {
+  const res = await axios.post(`${API}/auth/verify-otp`, formData);
+  return res.data;
 };
 
-export const forgotPassword = (email) => {
-  return axiosInstance.post('/auth/forgot-password', { email });
+// FORGOT PASSWORD
+export const forgotPasswordApi = async (formData) => {
+  const res = await axios.post(`${API}/forgot-password`, formData);
+  return res.data;
 };
 
-export const resetPassword = (token, newPassword) => {
-  return axiosInstance.post('/auth/reset-password', { token, newPassword });
+// RESET PASSWORD
+export const resetPasswordApi = async (formData) => {
+  const res = await axios.post(`${API}/reset-password`, formData);
+  return res.data;
 };
 
-export const logout = () => {
-  return axiosInstance.post('/auth/logout');
+// LOGOUT
+export const logoutUserApi = async (refreshToken) => {
+  const res = await axios.post(`${API}/logout`, { refreshToken });
+  return res.data;
 };
