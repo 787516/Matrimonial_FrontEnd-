@@ -1,0 +1,355 @@
+/* ===========================
+   Google Fonts
+=========================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;600;700&display=swap');
+
+/* ===========================
+   Root Variables
+=========================== */
+:root {
+  --primary: #ff0000;
+  --primary-strong: #ff0000;
+  --primary-light: #ff0000;
+  --secondary-color: #ffc107;
+  --glass-bg-color: rgba(255, 255, 255, 0.15);
+  --glass-border-color: rgba(255, 255, 255, 0.35);
+  --light-text: #ffffff;
+  --input-bg: rgba(255, 255, 255, 0.18);
+  --input-focus-bg: rgba(255, 255, 255, 0.35);
+  --input-shadow: rgba(233, 30, 99, 0.45);
+  --btn-glow: rgba(233, 30, 99, 0.45);
+  --text-glow: rgba(255, 255, 255, 0.9);
+}
+
+/* ===========================
+   Reset
+=========================== */
+.register-page{
+      margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+    height: 100%;
+  overflow-x: hidden;
+    min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px 0;
+  position: relative;
+  overflow-y: auto;
+}
+
+
+
+
+/* ===========================
+   Background Video
+=========================== */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.video-background video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8) saturate(1.2);
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* ===========================
+   Main Glass Container
+=========================== */
+.container {
+  width: 100%;
+  max-width: 900px;
+  padding: 40px 50px;
+  background: var(--glass-bg-color);
+  backdrop-filter: blur(14px);
+  border-radius: 30px;
+  margin: 40px 15px;
+  border: 1px solid var(--glass-border-color);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  animation: fadeIn 0.8s ease-out;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--light-text);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   Logo + Headers
+=========================== */
+header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+header img {
+  width: 220px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 0 7px rgba(0,0,0,0.4));
+}
+
+.form-title,
+.form-subtitle {
+  width: 100%;
+  text-align: center;
+}
+
+.form-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.form-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 30px;
+}
+/* Input err */
+/* Parent wrapper for input + error */
+.input-field {
+  position: relative;
+}
+
+
+/* ===========================
+   Input Layout
+=========================== */
+.row-3,
+.row-2 {
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.row-3 .input-field { width: 33.33%; }
+.row-2 .input-field { width: 50%; }
+
+/* ===========================
+   Input Fields
+=========================== */
+.input-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field label {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.input-field input,
+.input-field select {
+  height: 44px;
+  padding: 0 15px;
+  background: var(--input-bg);
+  border: none;
+  border-radius: 10px;
+  color: var(--light-text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.3s;
+  -webkit-appearance: none; /* remove native styling across browsers */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+#countryCode {
+  width: 75px;
+}
+
+.phone-input{
+  width: 150px;
+}
+
+/* Placeholder */
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===========================
+   Clean & Fixed Dropdown Styling
+   (Single source of truth for select)
+=========================== */
+
+select {
+  /* size & padding */
+  height: 48px;
+  padding: 0 16px;
+  padding-right: 42px; /* space for arrow */
+
+  /* visual */
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  color: var(--light-text);
+  font-size: 0.98rem;
+  cursor: pointer;
+  outline: none;
+  transition: all .22s ease;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.25);
+  backdrop-filter: blur(3px);
+
+  /* ensure single native-appearance reset */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* single clean arrow image (no duplicate backgrounds) */
+  background-image:
+    url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 14px;
+}
+
+/* keep arrow alignment consistent inside input-field / mobile-row */
+.input-field select,
+.mobile-row select {
+  background-position: right 12px center;
+}
+
+/* Hover effect */
+select:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(233,30,99,0.25);
+}
+
+/* Focus effect */
+/* ===========================
+   Select Focus (ONLY for select)
+=========================== */
+select:focus {
+  background: rgba(255,255,255,0.14);
+  border: 1.4px solid var(--primary);
+  box-shadow: 0 8px 26px rgba(233,30,99,0.38);
+  outline: none;
+}
+
+/* Dropdown option menu */
+select option {
+  background: rgb(133, 131, 131);
+  color: var(--light-text);
+  font-weight: 600;
+  padding: 10px;
+}
+
+/* ===========================
+   Focus for INPUTS only
+=========================== */
+input:focus {
+  background: var(--input-focus-bg);
+  border: 1.3px solid var(--primary);
+  box-shadow: 0 0 12px var(--input-shadow);
+  outline: none;
+}
+
+
+/* Mobile row */
+.mobile-row {
+  display: flex;
+  gap: 10px;
+}
+.mobile-row select {
+  width: 120px;
+}
+
+/* ===========================
+   Button
+=========================== */
+.btn-grad {
+  background-image: linear-gradient(to right, #D31027 0%, #EA384D 51%, #D31027 100%);
+  margin: 10px 0;
+  padding: 14px 18px; /* adjusted for your layout */
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  font-weight: 700;
+  font-size: 15.5px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(227, 30, 77, 0.4);
+  border-radius: 14px;
+  border: none;
+  width: 100%;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-3px);
+}
+/* ===========================
+   Terms
+=========================== */
+.terms {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+.terms span a {
+  color: var(--secondary-color);
+}
+
+/* ===========================
+   Sign In
+=========================== */
+.signin-text {
+  text-align: center;
+  margin-top: 10px;
+}
+.signin-text a {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media(max-width: 768px) {
+  .row-3,
+  .row-2 {
+    flex-direction: column;
+  }
+  .row-3 .input-field,
+  .row-2 .input-field {
+    width: 100%;
+  }
+  .container {
+    padding: 25px 20px;
+  }
+}

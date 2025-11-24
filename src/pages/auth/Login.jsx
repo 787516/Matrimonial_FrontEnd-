@@ -1,183 +1,158 @@
-import React from "react";
-// import { useLogin } from "../../hooks/AuthHooks/useLogin";
-import { useLogin } from "../../hooks/AuthHook/useLogin";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import bgVideo from "../../assets/videos/bgVideo.mp4";
-import logo from "../../assets/Logo.png";
+import React, { useState } from "react";
+import { useFormik } from "formik";
 import * as Yup from "yup";
+
+import { useLogin } from "../../hooks/AuthHook/useLogin";
+import { useForgotPassword } from "../../hooks/AuthHook/useForgotPassword";   // <-- ADD
+import logo from "../../assets/Logo.png";
+import bgVideo from "../../assets/videos/bgVideo.mp4";
 import { useNavigate } from "react-router-dom";
+import "./auth.css";
 
-// then use login.mutate()
-
-// Validation Schema
-const LoginSchema = Yup.object().shape({
-  username: Yup.string()
-    .test(
-      "email-or-mobile",
-      "Enter a valid email or 10-digit mobile number",
-      (value) => {
-        if (!value) return false;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const mobileRegex = /^[6-9]\d{9}$/;
-        return emailRegex.test(value) || mobileRegex.test(value);
-      }
-    )
-    .required("Username is required"),
-
-  password: Yup.string()
-    .min(6, "Password must be 6 characters")
-    .required("Password is required"),
-});
-
-export default function Login() {
-
+const Login = () => {
   const navigate = useNavigate();
-  const login = useLogin(navigate);
+
+  const loginMutation = useLogin(navigate);
+  const forgotMutation = useForgotPassword();  // <-- ADD
+
+  const loginSchema = Yup.object({
+    username: Yup.string()
+      .test(
+        "email-or-mobile",
+        "Enter valid email or 10-digit mobile",
+        (value) => {
+          if (!value) return false;
+          const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const mobile = /^[6-9]\d{9}$/;
+          return email.test(value) || mobile.test(value);
+        }
+      )
+      .required("Username is required"),
+
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+
+    validationSchema: loginSchema,
+
+    onSubmit: (values) => {
+      loginMutation.mutate({
+        email: values.username,
+        password: values.password,
+      });
+    },
+  });
+
+  // -------------------------------------------------------------
+  // FORGOT PASSWORD FLOW (NEW)
+  // -------------------------------------------------------------
+  const handleForgot = () => {
+    const email = formik.values.username;
+
+    if (!email) {
+      alert("Please enter your email first");
+      return;
+    }
+
+    forgotMutation.mutate(
+      { email },
+      {
+        onSuccess: () => {
+          navigate("/otp-verify", { state: { email, purpose: "forgot" } });
+        },
+      }
+    );
+  };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center">
-
-      {/* Background Video */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover brightness-[0.85] saturate-110 -z-10"
-      >
-        <source src={bgVideo} />
+    <div className="auth-page">
+      <video autoPlay muted loop playsInline id="bgVideo">
+        <source src={bgVideo} type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 bg-black/50 -z-10"></div>
+      <div className="video-overlay"></div>
 
-      {/* Login Card */}
-      <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 
-      shadow-[0_25px_60px_rgba(0,0,0,0.5)] rounded-3xl px-10 py-12">
+      <div className="auth-wrapper">
+        <div className="page login-container active">
 
-        {/* Logo */}
-        <img
-          src={logo}
-          alt="Logo"
-          className="mx-auto w-46 mb-5 drop-shadow-2xl"
-        />
+          <img src={logo} alt="Logo" className="logo-img" />
 
-        {/* Heading */}
-        <h2 className="text-white text-center text-m mb-8">
-          "Your Story Could Be The Next Beautiful Beginning"
-        </h2>
+          <div className="Login_head">
+            <h4>Login To SnehaBandha</h4>
+          </div>
 
-        {/* Form */}
-        <Formik
-          initialValues={{ username: "", password: "" }}
-          validationSchema={LoginSchema}
-          onSubmit={(values) => {
-            login.mutate({
-              email: values.username,
-              password: values.password,
-            });
-          }}
-        >
-          {({ values }) => {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const mobileRegex = /^[6-9]\d{9}$/;
-            const isValid =
-              emailRegex.test(values.username) ||
-              mobileRegex.test(values.username);
+          <p className="tagline">
+            "Your Story Could Be The Next Beautiful Beginning"
+          </p>
 
-            return (
-              <Form className="space-y-6">
+          <form onSubmit={formik.handleSubmit}>
+            {/* USERNAME */}
+            <div className="form-group">
+              <i className="fas fa-mobile-alt"></i>
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter Mobile No. or Email"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
 
-                {/* Username */}
-                <div className="relative">
-                  <label className="text-white/90 text-sm font-semibold mb-1 block">
-                    Email
-                  </label>
-=
-                  <div className="relative">
-                    <i className="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-white/60"></i>
+              {formik.touched.username && formik.errors.username && (
+                <p className="error-text">{formik.errors.username}</p>
+              )}
+            </div>
 
-                    <Field
-                      type="text"
-                      name="username"
-                      placeholder="Enter your email"
-                      className="w-full bg-white/15 backdrop-blur-lg border border-white/30 
-                      text-white font-medium px-12 py-3 rounded-xl
-                      placeholder-white/60 focus:border-pink-500
-                      focus:ring-4 focus:ring-pink-500/10 outline-none transition"
-                    />
+            {/* PASSWORD */}
+            <div className="form-group">
+              <i className="fas fa-lock"></i>
 
-                    {/* Validation Icon */}
-                    {values.username.length > 0 && (
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xl">
-                        {isValid ? (
-                          <i className="fas fa-check-circle text-green-400"></i>
-                        ) : (
-                          <i className="fas fa-times-circle text-red-400"></i>
-                        )}
-                      </span>
-                    )}
-                  </div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
 
-                  <ErrorMessage
-                    name="username"
-                    component="p"
-                    className="text-red-400 text-xs mt-1 pl-1"
-                  />
-                </div>
+              {formik.touched.password && formik.errors.password && (
+                <p className="error-text">{formik.errors.password}</p>
+              )}
+            </div>
 
-                {/* Password */}
-                <div>
-                  <label className="text-white/90 text-sm font-semibold mb-1 block">
-                    Password
-                  </label>
+            <button
+              type="submit"
+              className="btn-grad"
+              disabled={loginMutation.isPending}
+            >
+              {loginMutation.isPending ? "Logging in..." : "Login"}
+            </button>
+          </form>
 
-                  <div className="relative">
-                    <i className="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-white/60"></i>
+          <div className="extras">
+            <button
+              className="link-button"
+              onClick={handleForgot}
+              disabled={forgotMutation.isPending}
+            >
+              {forgotMutation.isPending ? "OTP Sending..." : "Forgot Password?"}
+            </button>
 
-                    <Field
-                      name="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      className="w-full bg-white/15 backdrop-blur-lg border border-white/30 
-                      text-white font-medium px-12 py-3 rounded-xl
-                      placeholder-white/60 focus:border-pink-500
-                      focus:ring-4 focus:ring-pink-500/10 outline-none transition"
-                    />
-                  </div>
+            <a href="#">Register</a>
+          </div>
 
-                  <ErrorMessage
-                    name="password"
-                    component="p"
-                    className="text-red-400 text-xs mt-1 pl-1"
-                  />
-                </div>
-
-                {/* Login Button */}
-                <button
-                  type="submit"
-                  disabled={login.isLoading}
-                  className="w-full py-3 rounded-xl bg-linear-to-r from-pink-600 to-pink-400 
-                  text-white font-bold text-sm shadow-lg shadow-pink-700/30
-                  hover:scale-[1.03] active:scale-[0.98] disabled:opacity-60 transition"
-                >
-                  {login.isLoading ? "Logging in..." : "Login"}
-                </button>
-
-              </Form>
-            );
-          }}
-        </Formik>
-
-        {/* Extra Links */}
-        <div className="flex justify-between mt-6">
-          <a className="text-pink-300 hover:text-white hover:underline text-sm cursor-pointer">
-            Forgot Password?
-          </a>
-          <a className="text-pink-300 hover:text-white hover:underline text-sm cursor-pointer">
-            Create Account
-          </a>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Login;

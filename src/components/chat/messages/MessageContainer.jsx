@@ -21,10 +21,10 @@ const MessageContainer = () => {
       ) : (
         <>
           {/* Luxurious Header */}
-          <div className='bg-linear-to-r from-rose-600 via-pink-600 to-rose-700 px-6 py-5 shadow-2xl backdrop-blur-md border-b border-rose-500/30'>
+          <div className='bg-linear-to-r from-slate-900 via-slate-950 to-black px-6 py-5 shadow-2xl backdrop-blur-md border-b border-rose-500/30'>
             <div className="flex items-center gap-3">
               <div className="avatar online">
-                <div className="w-12 rounded-full ring-4 ring-rose-400 ring-offset-2 ring-offset-transparent">
+                <div className="w-12 rounded-full ring-1 ring-rose-400 ring-offset-2 ring-offset-transparent">
                   <img src={selectedConversation?.profilePic} alt="profile" />
                 </div>
               </div>

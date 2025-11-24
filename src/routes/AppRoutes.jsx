@@ -6,12 +6,11 @@ import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import PublicLayout from '../layouts/PublicLayout';
 import ProtectedRoute from './ProtectedRoute.jsx';
-
 // Auth Pages
 import Login from '../pages/auth/Login';
-import Register from '../pages/auth/OTPVerify';
-import OTPVerify from '../pages/auth/OTPVerify';
-import ForgotPassword from '../pages/auth/ForgotPassword';
+import Register from '../pages/auth/Register.jsx';
+import OTPVerify from '../pages/auth/OTPVerify.jsx';
+import ForgotPassword from '../pages/auth/ForgotPassword.jsx';
 import ResetPassword from '../pages/auth/ResetPassword';
  
 // Dashboard Pages

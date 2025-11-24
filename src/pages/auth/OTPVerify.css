@@ -1,0 +1,228 @@
+/* Import Google Font (Poppins for clean, modern look) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    /* Define colors for a sophisticated matrimonial theme */
+     --primary: #ff0000;
+  --primary-strong: #ff0000;
+  --primary-light: #ff0000;
+    /* Deep Pink/Rose - for highlights (Matrimonial feel) */
+    --secondary-color: #ffc107;
+    /* Amber/Gold - for accents */
+    --glass-bg-color: rgba(255, 255, 255, 0.15);
+    /* Slightly less opaque white for more transparency */
+    --glass-border-color: rgba(255, 255, 255, 0.4);
+    --light-text: #ffffff;
+    --dark-text: #2c3e50;
+    --input-bg-focus: rgba(255, 255, 255, 0.4);
+}
+
+
+.otp-page{
+        box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f4f7;
+    /* Fallback background color */
+    overflow: hidden;
+    position: relative;
+
+}
+
+/* --- Video Background Setup --- */
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    /* Ensures video is behind everything */
+}
+
+#myVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Ensures video covers the entire area */
+    filter: brightness(0.8) saturate(1.1);
+    /* Subtle visual enhancement */
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    /* Dark overlay to improve text readability */
+    z-index: 1;
+    /* Above video, below glass container */
+}
+
+
+/* --- Glass Container Styling --- */
+.glass-container {
+  width:100%;
+  max-width:420px; /* slightly larger for better readability */
+  padding:40px 34px;
+  border-radius:24px;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 28px 60px var(--shadow-dark);
+  text-align:center;
+  z-index:10;
+  animation:fadeIn .85s cubic-bezier(.2,.9,.25,1);
+}
+
+/* --- Logo and Text --- */
+.logo{
+  display:block;
+  margin:0 auto 18px;
+  max-width:280px;
+  width:65%;
+  height:auto;
+  max-height:110px;
+  object-fit:contain;
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.45)) brightness(1.12);
+  transition:transform var(--transition-fast) ease;
+}
+
+
+.title {
+    font-size: 2rem;
+    color: var(--light-text);
+    margin-bottom: 8px;
+    font-weight: 700;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 35px;
+    font-weight: 300;
+}
+
+/* --- OTP Inputs --- */
+.otp-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.otp-inputs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.otp-input {
+    width: 50px;
+    height: 60px;
+    font-size: 1.8rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border-color);
+    border-radius: 10px;
+    color: var(--light-text);
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-weight: 600;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.otp-input:focus {
+   background:var(--input-focus-bg);border:2px solid var(--primary);box-shadow:0 0 18px rgba(233,30,99,0.65);transform:scale(1.06)}
+
+
+/* Remove default number arrows/spinners (only webkit standard kept) */
+.otp-input::-webkit-outer-spin-button,
+.otp-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* --- Resend Timer/Link --- */
+.resend-timer {
+    margin-bottom: 35px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.resend-link {
+    color: var(--secondary-color);
+    /* Use secondary color for link */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.resend-link:hover {
+    color: #ffea90;
+    text-decoration: underline;
+}
+
+#timer {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* --- Verify Button --- */
+.btn-grad {
+  background-image: linear-gradient(to right, #D31027 0%, #EA384D 51%, #D31027 100%);
+  margin: 10px 0;
+  padding: 14px 18px; /* adjusted for your layout */
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  font-weight: 700;
+  font-size: 15.5px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(227, 30, 77, 0.4);
+  border-radius: 14px;
+  border: none;
+  width: 100%;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-3px);
+}
+
+/* --- Media Query for Smaller Screens --- */
+@media (max-width: 500px) {
+    .glass-container {
+        padding: 30px 20px;
+        max-width: 95%;
+    }
+
+    .otp-inputs {
+        gap: 8px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 50px;
+        font-size: 1.4rem;
+    }
+
+    .title {
+        font-size: 1.6rem;
+    }
+}
