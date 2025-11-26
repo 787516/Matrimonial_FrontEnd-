@@ -1,0 +1,140 @@
+:root {
+  --primary-gradient: linear-gradient(to right, #D31027, #EA384D, #D31027);
+  --inter: "Inter", sans-serif;
+  --text: #ffffff;
+}
+
+/* FOOTER MAIN */
+.footer-section {
+  background: linear-gradient(100deg, rgba(64, 64, 64, 0.85), rgba(0, 0, 0, 0.9)),
+    url('../../assets/Landing Page/jay_footer.JPG') center/cover no-repeat;
+  color: #fff;
+  padding: 60px 0 20px;
+  width: 100%;
+}
+
+.footerDiv{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* TITLES */
+.section-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin-bottom: 0px;
+}
+
+/* MAP IMAGE */
+.map-image {
+  width: 90%;
+  border-radius: 12px;
+}
+
+/* CONTACT TEXT */
+.contact-intro {
+  color: #ddd;
+  font-size: 0.9rem;
+}
+
+/* FORM BUTTON */
+.btn-submit {
+  background-image: var(--primary-gradient);
+  padding: 12px 35px;
+  background-size: 150% auto;
+  color: #000;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: 0.5s;
+}
+
+.btn-submit:hover {
+  background-position: left center;
+}
+
+/* CONTACT ITEMS */
+.contact-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+  font-size: 0.95rem;
+}
+
+.contact-item svg {
+  margin-top: 4px;
+}
+
+/* LINKS */
+.footer-links {
+  display: flex;
+  gap: 22px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #4a9eff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #4a9eff;
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  margin-top: 30px;
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+}
+
+/* SOCIAL ICONS */
+.social-links {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1rem;
+}
+
+.social-links a {
+  color: #fff;
+  cursor: pointer;
+}
+
+.social-links a:hover {
+  color: #ff9eb0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .map-image {
+    width: 100%;
+  }
+  .social-links {
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .footer-copy {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}

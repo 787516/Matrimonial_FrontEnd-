@@ -15,11 +15,11 @@ import ResetPassword from '../pages/auth/ResetPassword';
  
 // Dashboard Pages
 import Dashboard from '../pages/dashboard/Dashboard';
+import Preferences from '../pages/dashboard/Preferences.jsx';
+import GalleryUpload from '../pages/dashboard/GalleryUpload.jsx';
 import Matches from '../pages/dashboard/Matches';
 import ViewProfile from '../pages/dashboard/ViewProfile';
 import EditProfile from '../pages/dashboard/EditProfile';
-import Preferences from '../pages/dashboard/Preferences';
-import GalleryUpload from '../pages/dashboard/GalleryUpload';
 
 // Search Pages
 import Search from '../pages/search/Search';
@@ -127,6 +127,17 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      {/* <Route
+        path="/partner-preferences"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <preferences />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      /> */}
+      
       <Route
         path="/matches"
         element={
@@ -158,7 +169,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/preferences"
+        path="/partner-preferences"
         element={
           <ProtectedRoute>
             <DashboardLayout>
@@ -168,7 +179,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/gallery"
+        path="/GalleryUpload"
         element={
           <ProtectedRoute>
             <DashboardLayout>

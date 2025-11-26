@@ -1,0 +1,58 @@
+/* LAYOUT --------------------------------------------------- */
+    main.preference {
+            max-width: 1500px;
+           
+            color: #000;
+            background:#F0F8FF;
+        }
+
+    #ageBox,
+    #heightBox {
+        font-size: 0.9rem;
+        background: #f1f1f1;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    /* Card Styling */
+    .preference-card {
+        background: #fff;
+        max-width: 950px;
+        border-radius: 14px;
+        padding: 32px;
+    }
+
+    /* p tags = 1rem */
+    p {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    /* Dropdown + Input styling */
+    .form-select,
+    .form-control {
+        height: 45px;
+        font-size: 0.95rem;
+        color: #333;
+    }
+
+    .form-select::placeholder,
+    .form-control::placeholder {
+        color: #bbbbbb !important;
+    }
+
+    /* Income Chips */
+    .tag {
+        padding: 6px 14px;
+        background: #f1f1f1;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        cursor: pointer;
+    }
+
+    .tag:hover {
+        background: #d31027;
+        color: #fff;
+        transition: 0.25s;
+    }

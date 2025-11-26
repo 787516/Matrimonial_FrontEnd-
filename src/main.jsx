@@ -6,6 +6,9 @@ import './styles/globals.css'
 import App from './App.jsx'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 // Create QueryClient instance
 const queryClient = new QueryClient();

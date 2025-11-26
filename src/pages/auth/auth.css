@@ -45,12 +45,12 @@
   z-index: -2;
 }
 
-/* .auth-page .video-overlay {
+.auth-page .video-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.32);
   z-index: -1;
-} */
+}
 
 /* GLASS LOGIN PAGE CARD */
 .page {

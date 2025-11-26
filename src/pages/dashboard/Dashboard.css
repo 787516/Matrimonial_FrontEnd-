@@ -1,0 +1,275 @@
+:root {
+  --soft-border: #f0f0f0;
+}
+
+/* MAIN WRAPPER */
+main.dashboard {
+  max-width: 1500px;
+  background: #F0F8FF;
+  padding-top: 80px !important;
+  padding-bottom: 40px !important;
+  padding-left: 25px;
+  padding-right: 25px;
+  
+}
+
+/* LEFT PROFILE CARD --------------------------------------- */
+.profile-card {
+  background: #fff;
+ // border-radius: 18px;
+  border: 1px solid #f2d6db;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-card::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(
+    circle at 0 0,
+    rgba(211, 16, 39, 0.1),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.08);
+}
+
+.profile-card:hover::before {
+  opacity: 1;
+}
+
+.profile-photo-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-photo-status {
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+  background: #16a34a;
+  color: #fff;
+  font-size: 0.6rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.profile-photo-status span.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.profile-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.reg-id {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.btn-edit-photo {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  padding-inline: 18px;
+  
+}
+
+.account-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.account-type {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.upgrade-link {
+  font-size: 0.85rem;
+  color: #d31027;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.upgrade-link:hover {
+  text-decoration: underline;
+}
+
+.profile-progress-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.progress {
+  height: 10px;
+  border-radius: 999px;
+  background-color: #f4f4f4;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #d33a3a, #ff5a5a);
+  border-radius: 999px;
+}
+
+.progress-meta {
+  font-size: 0.78rem;
+  color: #999;
+}
+
+.progress-percent {
+  font-size: 0.78rem;
+  color: #999;
+  font-weight: 500;
+}
+
+.profile-tip {
+  font-size: 0.78rem;
+  color: #b3b3b3;
+  text-align: center;
+  margin-top: 16px;
+}
+
+/* SUCCESS TOAST -------------------------------------------- */
+.toast-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 90px;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+.toast-message {
+  background: #16a34a;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.toast-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RIGHT CONTENT -------------------------------------------- */
+.activity-summary h5 {
+  font-weight: 700;
+}
+
+.stat-box {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--soft-border);
+  min-height: 110px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+.stat-title {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: #666;
+}
+
+.stat-value {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #222;
+}
+
+.stat-helper {
+  font-size: 0.78rem;
+  color: #999;
+}
+
+.stat-link {
+  font-size: 0.75rem;
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  color: #d31027;
+  text-decoration: none;
+}
+
+.stat-link:hover {
+  text-decoration: underline;
+}
+
+/* MATCHES -------------------------------------------------- */
+.matches-header h5 {
+  font-weight: 700;
+}
+
+.matches-count-badge {
+  background: #d31027;
+}
+
+.match-card {
+  border-radius: 18px;
+  border: 1px solid #f0f0f0;
+  background: #fff;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.match-card img {
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* matchesGrid is controlled in React, but we keep original comment */
+#matchesGrid {
+  /* originally: display:none; now handled by React */
+}
+
+.btn-view-all {
+  border-radius: 999px;
+  padding: 5px 18px;
+  font-size: 0.8rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 575px) {
+  .profile-card {
+    padding: 18px !important;
+  }
+}
