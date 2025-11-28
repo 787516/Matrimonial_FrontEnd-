@@ -23,6 +23,12 @@ export const verifyOtpApi = async (formData) => {
   return res.data;
 };
 
+// Set password
+export const setPasswordApi = async (formData) => {
+  const res = await axios.post(`${API}/auth/set-password`, formData);
+  return res.data;
+};
+
 // FORGOT PASSWORD
 export const forgotPasswordApi = async (formData) => {
   const res = await axios.post(`${API}/auth/forgot-password`, formData);

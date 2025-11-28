@@ -8,8 +8,8 @@ const SubNavbar = () => {
       <ul>
         <li><NavLink to="/dashboard" end>Dashboard</NavLink></li>
         <li><NavLink to="/partner-preferences">Partner Preference</NavLink></li>
-        <li><NavLink to="/photos">My Photos</NavLink></li>
-        <li><NavLink to="/profile">My Profile</NavLink></li>
+        <li><NavLink to="/GalleryUpload">My Photos</NavLink></li>
+        <li><NavLink to="/profile/appearance">My Profile</NavLink></li>
         <li><NavLink to="/inbox">Inbox</NavLink></li>
         <li><NavLink to="/settings">Settings</NavLink></li>
       </ul>

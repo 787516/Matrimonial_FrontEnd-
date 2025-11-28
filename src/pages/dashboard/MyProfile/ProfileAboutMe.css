@@ -1,0 +1,229 @@
+/* -------------------------------------------------
+   BASE LAYOUT
+------------------------------------------------- */
+.mp-page-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  padding: 24px 16px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-wrapper {
+  display: flex;
+ // gap: 25px;
+}
+
+.profile-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+
+/* -------------------------------------------------
+   SIDEBAR
+-------------------------------------------------- */
+.sidebar {
+  width: 260px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 22px;
+}
+
+.sidebar h5 {
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 12px;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 5px;
+  border-radius: 6px;
+  transition: 0.25s;
+}
+
+.sidebar a i {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+}
+
+/* ACTIVE LINK */
+.sidebar a.active {
+  color: #D31027;
+  font-weight: 600;
+  border-left: 4px solid #D31027;
+  background: #fff0f2;
+  padding-left: 12px;
+}
+
+.sidebar a:hover {
+  background: #f2f2f2;
+}
+
+/* -------------------------------------------------
+   RED HEADING BAR
+-------------------------------------------------- */
+.profile-bar {
+  background: linear-gradient(90deg, #d31027, #ea384d);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-bar h5 {
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.profile-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80px;
+  width: 80px;
+  height: 100%;
+  background: linear-gradient(120deg,
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0));
+  transform: skewX(-20deg);
+  animation: shine 4s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -80px;
+  }
+  50% {
+    left: 130%;
+  }
+  100% {
+    left: 130%;
+  }
+}
+
+/* -------------------------------------------------
+   ACCORDION CLEAN UI
+-------------------------------------------------- */
+
+.accordion-item {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin-bottom: 22px !important;
+  overflow: hidden;
+  border-radius: 12px !important;
+}
+
+/* HEADER BUTTON */
+.accordion-button.about-btn {
+  background: linear-gradient(90deg, #d31027, #ea384d) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  padding: 18px 22px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 20px rgba(211, 16, 39, 0.35) !important;
+  transition: all 0.3s ease;
+  gap: 12px;
+}
+
+/* remove blue focus border */
+.accordion-button:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* arrow white */
+.accordion-button.about-btn::after {
+  filter: brightness(0) invert(1);
+  margin-left: 20px;
+}
+
+/* icon white */
+.accordion-button.about-btn i {
+  color: #fff !important;
+  margin-right: 8px;
+}
+
+/* When open → remove bottom radius */
+.accordion-button.about-btn:not(.collapsed) {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* When closed → full rounded corners */
+.accordion-button.about-btn.collapsed {
+  border-radius: 12px !important;
+}
+
+/* -------------------------------------------------
+   ACCORDION BODY (white box)
+-------------------------------------------------- */
+.accordion-body {
+  background: #ffffff !important;
+  padding: 18px 22px !important;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border: 1px solid #eee;
+  border-top: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  margin-top: -1px;
+}
+
+/* -------------------------------------------------
+   ITEMS INSIDE ACCORDION
+-------------------------------------------------- */
+.accordion-body .row > div {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.accordion-body strong {
+  font-weight: 600;
+  color: #333;
+}
+
+/* -------------------------------------------------
+   RESPONSIVENESS
+-------------------------------------------------- */
+@media (max-width: 992px) {
+  .profile-wrapper {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .accordion-body {
+    padding: 16px !important;
+  }
+}

@@ -9,12 +9,13 @@ export const useResetPassword = () => {
     mutationFn: resetPasswordApi,
 
     onSuccess: (res) => {
-      alert(res?.data?.message || "Password reset successful");
+      alert(res?.message || "Password reset successful!");
       navigate("/login");
     },
 
     onError: (err) => {
-      alert(err?.response?.data?.message || "Failed to reset password");
+      alert(err?.response?.data?.message || "Failed to reset password!");
+      console.log("Reset Password Error:", err);
     },
   });
 };

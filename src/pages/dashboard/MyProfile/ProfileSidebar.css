@@ -1,0 +1,76 @@
+/* src/components/profile/ProfileSidebar.css */
+
+:root {
+  --mp-red: #d31027;
+  --mp-light-bg: #f5f7fb;
+  --mp-border: #e5e7eb;
+  --mp-text: #111827;
+  --mp-muted: #6b7280;
+  --mp-sidebar-width: 260px;
+}
+
+/* Sidebar wrapper */
+.mp-sidebar {
+  width: var(--mp-sidebar-width);
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #f1d5db;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
+  padding: 20px 18px;
+  align-self: flex-start;
+}
+
+/* Title "Manage Your Profile" */
+.mp-sidebar-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--mp-text);
+  margin-bottom: 18px;
+}
+
+/* Menu list */
+.mp-sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Menu item */
+.mp-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--mp-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+.mp-sidebar-icon {
+  font-size: 1.1rem;
+  color: var(--mp-muted);
+}
+
+.mp-sidebar-item:hover {
+  background: #fff5f6;
+  transform: translateY(-1px);
+}
+
+.mp-sidebar-item.active {
+  background: linear-gradient(to right, #d31027, #ea384d);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(211, 16, 39, 0.3);
+}
+
+.mp-sidebar-item.active .mp-sidebar-icon {
+  color: #ffffff;
+}
+
+@media (max-width: 992px) {
+  .mp-sidebar {
+    width: 100%;
+  }
+}

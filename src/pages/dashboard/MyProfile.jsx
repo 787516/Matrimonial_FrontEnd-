@@ -3,7 +3,7 @@ import ProfileInfo from '../../components/profile/ProfileInfo';
 import GallerySlider from '../../components/profile/GallerySlider';
 import Button from '../../components/UI/Button';
 import React from 'react';
-const ViewProfile = () => {
+const MyProfile = () => {
   const { userId } = useParams();
 
   const profile = {
@@ -30,4 +30,4 @@ const ViewProfile = () => {
   );
 };
 
-export default ViewProfile;
+export default MyProfile;

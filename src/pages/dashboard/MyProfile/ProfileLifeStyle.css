@@ -1,0 +1,224 @@
+.mp-page-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  padding: 24px 16px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* RIGHT SIDE */
+.profile-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* LIFESTYLE & ABOUT CARDS */
+.life-card,
+.about-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 22px 26px 26px;
+}
+
+.life-header,
+.about-header-bar {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.life-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.life-label {
+  width: 170px;
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.life-colon {
+  width: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.life-field {
+  flex: 1;
+  max-width: 440px;
+}
+
+.life-field .form-control {
+  max-width: 360px;
+  font-size: 0.9rem;
+  height: 40px;
+}
+
+.habit-options,
+.diet-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.88rem;
+}
+
+/* Save button */
+.btn-grad {
+  background-image: linear-gradient(to right, #D31027 0%, #EA384D 51%, #D31027 100%);
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: inline-block;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+}
+
+/* ABOUT SECTION */
+.about-card {
+  margin-top: 10px;
+}
+
+.about-toggle {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.about-toggle-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.about-toggle-sub {
+  font-size: 0.86rem;
+  color: #777;
+  margin-top: 4px;
+}
+
+.about-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: #555;
+  transition: 0.25s ease;
+}
+
+.about-icon.open {
+  transform: rotate(90deg);
+  background: #fff0f2;
+  color: #D31027;
+  border-color: #f7c7d2;
+}
+
+.about-body {
+  margin-top: 18px;
+  border-top: 1px dashed #eee;
+  padding-top: 16px;
+  display: none;
+  animation: fadeInUp 0.25s ease;
+}
+
+.about-body.show {
+  display: block;
+}
+
+.about-note {
+  font-size: 0.83rem;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.about-label {
+  font-weight: 600;
+  font-size: 0.94rem;
+  margin-bottom: 8px;
+  display: inline-block;
+  text-decoration: underline;
+}
+
+.about-textarea {
+  width: 100%;
+  min-height: 150px;
+  max-height: 260px;
+  resize: vertical;
+  font-size: 0.9rem;
+}
+
+.char-info {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .life-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .life-label {
+    width: 100%;
+  }
+
+  .life-colon {
+    display: none;
+  }
+
+  .life-field {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .life-field .form-control {
+    max-width: 100%;
+  }
+
+  .btn-grad {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .life-card,
+  .about-card {
+    padding: 18px 16px 22px;
+  }
+}

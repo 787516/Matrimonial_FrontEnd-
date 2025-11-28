@@ -11,14 +11,22 @@ import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register.jsx';
 import OTPVerify from '../pages/auth/OTPVerify.jsx';
 import ForgotPassword from '../pages/auth/ForgotPassword.jsx';
-import ResetPassword from '../pages/auth/ResetPassword';
+// import ResetPassword from '../pages/auth/ResetPassword';
  
 // Dashboard Pages
 import Dashboard from '../pages/dashboard/Dashboard';
 import Preferences from '../pages/dashboard/Preferences.jsx';
 import GalleryUpload from '../pages/dashboard/GalleryUpload.jsx';
 import Matches from '../pages/dashboard/Matches';
-import ViewProfile from '../pages/dashboard/ViewProfile';
+//import MyProfile from '../pages/dashboard/MyProfile';
+import ProfileAppearance from '../pages/dashboard/MyProfile/ProfileAppearance.jsx';
+import ProfileAboutMe from '../pages/dashboard/MyProfile/ProfileAboutMe.jsx';
+import ProfileEditPersonal from '../pages/dashboard/MyProfile/ProfileEditPersonal.jsx';
+import ProfileHoroscope from '../pages/dashboard/MyProfile/ProfileHoroscope.jsx';
+import ProfileReligiousBackground  from "../pages/dashboard/MyProfile/ProfileReligiousBackground.jsx"
+import ProfileEducationBackground from "../pages/dashboard/MyProfile/ProfileEducationBackground.jsx"
+import ProfileLocation from "../pages/dashboard/MyProfile/ProfileLocation.jsx"
+import ProfileLifeStyle from "../pages/dashboard/MyProfile/ProfileLifeStyle.jsx"
 import EditProfile from '../pages/dashboard/EditProfile';
 
 // Search Pages
@@ -100,7 +108,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/forgot-password"
+        path="/reset-password"
         element={
           <AuthLayout>
             <ForgotPassword />
@@ -108,10 +116,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/reset-password"
+        path="/set-password"
         element={
           <AuthLayout>
-            <ResetPassword />
+            <ForgotPassword />
           </AuthLayout>
         }
       />
@@ -148,26 +156,88 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      // My Profile Routes
       <Route
-        path="/profile/:userId"
+        path="/profile/appearance"
         element={
           <ProtectedRoute>
             <DashboardLayout>
-              <ViewProfile />
+              <ProfileAppearance />
             </DashboardLayout>
           </ProtectedRoute>
         }
       />
       <Route
-        path="/profile/edit"
+        path="/profile/about-me"
         element={
           <ProtectedRoute>
             <DashboardLayout>
-              <EditProfile />
+              <ProfileAboutMe />
             </DashboardLayout>
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/profile/edit-personal"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ProfileEditPersonal />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile/Horoscope-details"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ProfileHoroscope />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile/religious-background"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ProfileReligiousBackground />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile/education-career"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ProfileEducationBackground />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+       <Route
+        path="/profile/location"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ProfileLocation />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+            <Route
+        path="/profile/lifestyle"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ProfileLifeStyle />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      
       <Route
         path="/partner-preferences"
         element={

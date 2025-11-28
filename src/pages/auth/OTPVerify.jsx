@@ -34,23 +34,26 @@ const OTPVerify = () => {
     onSubmit: (values) => {
       const finalOtp = values.otp.join("");
 
-      verifyOtpMutation.mutate(
-        { email, otp: finalOtp, purpose },   // <-- SUPER IMPORTANT
-      
+    verifyOtpMutation.mutate(
+  { email, otp: finalOtp, purpose },
 
-      {
-        onSuccess: () => {
-          // 🔥 Handle redirection based on purpose
-          if (purpose === "register") {
-            navigate("/login");
-          } else if (purpose === "forgot") {
-            navigate("/forgot-password", {
-              state: { email },
-            });
-          }
-        },
+  {
+    onSuccess: () => {
+      if (purpose === "register") {
+        navigate("/set-password", {
+          state: { email, purpose: "register" },   // <<-- MISSING
+        });
       }
-      );
+
+      if (purpose === "forgot") {
+        navigate("/reset-password", {
+          state: { email, purpose: "forgot" },     // <<-- MISSING
+        });
+      }
+    },
+  }
+);
+
 },
   });
 

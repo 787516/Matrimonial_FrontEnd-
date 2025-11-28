@@ -1,37 +1,47 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Dashboard.css";
 import { AuthContext } from "../../context/AuthContext.jsx";
-import AvtarPhoto from "../../assets/Landing Page/profileAvtar.jpg"
+import AvtarPhoto from "../../assets/Landing Page/profileAvtar.jpg";
+import { useUserProfile } from "../../hooks/ProfileHook/useUserDetailHook";
+import { useGetGallery, useUploadProfilePhoto } from "../../hooks/GalleryHook/useGalleryHook";
 
 const Dashboard = () => {
-
   const { authUser } = React.useContext(AuthContext);
-  //console.log("Authenticated User in Dashboard:", authUser);
 
-  // Find profile photo (from gallery)
-  const profilePhotoFromGallery = authUser?.gallery?.find(
-    (item) => item.isProfilePhoto === true
-  );
+  const userProfileId = authUser?.user?._id || null;
 
-  // Final image → profilePhoto OR fallback
-  const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
+  // ✔ ALWAYS CALL HOOKS AT TOP
+  const { data: profile, isLoading } = useUserProfile(userProfileId);
+
+  // ✔ States (must be before ANY return)
   const [showToast, setShowToast] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [showMatches, setShowMatches] = useState(false);
   const photoInputRef = useRef(null);
 
-  // Profile Completion Progress
-  const profileCompleted =
-    authUser?.profile?.profileCompleted || 0;
+ const uploadProfilePhoto = useUploadProfilePhoto();
+const { data: gallery } = useGetGallery(userProfileId);
 
-  const [progress, setProgress] = useState(0);
+const profilePhotoFromGallery = gallery?.find((p) => p.isProfilePhoto) || null;
+const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
 
+
+  // ✔ Safe fallback: if profile is loaded use that; else fallback to authUser
+  // const profilePhotoFromGallery = authUser?.gallery?.find(
+  //   (item) => item.isProfilePhoto === true
+  // );
+  // const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
+
+  // ✔ Take profileCompleted from fetched profile
+  const profileCompleted = profile?.profileCompleted || 0;
+
+  // ✔ Animate progress bar
   useEffect(() => {
-    const target = profileCompleted;
     let width = 0;
-
     const interval = setInterval(() => {
       width += 1;
-      if (width >= target) {
-        width = target;
+      if (width >= profileCompleted) {
+        width = profileCompleted;
         clearInterval(interval);
       }
       setProgress(width);
@@ -39,11 +49,56 @@ const Dashboard = () => {
 
     return () => clearInterval(interval);
   }, [profileCompleted]);
-  // Progress
-  // const [progress, setProgress] = useState(0);
-  // const targetProgress = 92; // same as aria-valuenow="92"
 
-  // Stats (no animation, but same numbers)
+  // ✔ Toast hide logic
+  useEffect(() => {
+    if (!showToast) return;
+    const t = setTimeout(() => setShowToast(false), 2200);
+    return () => clearTimeout(t);
+  }, [showToast]);
+
+  const handleEditPhotoClick = () => {
+    photoInputRef.current?.click();
+  };
+
+const handlePhotoChange = (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  uploadProfilePhoto.mutate(file);
+
+  setShowToast(true);
+};
+
+
+  const handleToggleMatches = () => {
+    setShowMatches((prev) => !prev);
+  };
+
+  const handleExploreMatchesClick = (e) => {
+    e.preventDefault();
+    alert("Open Matches page (replace with your React route).");
+  };
+  // ---------------------------
+  // ✔ ALL RETURNS AFTER HOOKS
+  // ---------------------------
+
+  if (!userProfileId) {
+    return <h3 className="text-center mt-4">Please login first.</h3>;
+  }
+
+  if (isLoading) {
+    return <h3 className="text-center mt-5">Loading...</h3>;
+  }
+
+  if (!profile) {
+    return (
+      <h3 className="text-center mt-5">
+        No profile found. Please complete your profile.
+      </h3>
+    );
+  }
+
   const statsData = [
     {
       id: "accepted",
@@ -129,7 +184,7 @@ const Dashboard = () => {
     },
   ];
 
-  const [showMatches, setShowMatches] = useState(false);
+  // const [showMatches, setShowMatches] = useState(false);
 
   // Progress bar smooth animation (like original)
   // useEffect(() => {
@@ -146,35 +201,35 @@ const Dashboard = () => {
   // }, []);
 
   // Toast hide timer
-  useEffect(() => {
-    if (!showToast) return;
-    const t = setTimeout(() => setShowToast(false), 2200);
-    return () => clearTimeout(t);
-  }, [showToast]);
+  // useEffect(() => {
+  //   if (!showToast) return;
+  //   const t = setTimeout(() => setShowToast(false), 2200);
+  //   return () => clearTimeout(t);
+  // }, [showToast]);
 
-  const handleEditPhotoClick = () => {
-    if (photoInputRef.current) {
-      photoInputRef.current.click();
-    }
-  };
+  // const handleEditPhotoClick = () => {
+  //   if (photoInputRef.current) {
+  //     photoInputRef.current.click();
+  //   }
+  // };
 
-  const handlePhotoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setProfilePhoto(url);
-      setShowToast(true);
-    }
-  };
+  // const handlePhotoChange = (e) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const url = URL.createObjectURL(file);
+  //     setProfilePhoto(url);
+  //     setShowToast(true);
+  //   }
+  // };
 
-  const handleExploreMatchesClick = (e) => {
-    e.preventDefault();
-    alert("Open Matches page (replace with your React route).");
-  };
+  // const handleExploreMatchesClick = (e) => {
+  //   e.preventDefault();
+  //   alert("Open Matches page (replace with your React route).");
+  // };
 
-  const handleToggleMatches = () => {
-    setShowMatches((prev) => !prev);
-  };
+  // const handleToggleMatches = () => {
+  //   setShowMatches((prev) => !prev);
+  // };
 
   return (
     <>
@@ -216,7 +271,7 @@ const Dashboard = () => {
                 </h5>
 
                 <small className="reg-id d-block mb-2">
-                  Registration ID : SBM01101
+                  Registration ID : {authUser?.user?.registrationId || "*****"}{" "}
                 </small>
 
                 <button
