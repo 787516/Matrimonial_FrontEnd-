@@ -7,6 +7,7 @@ import App from './App.jsx'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+
 // Create QueryClient instance
 const queryClient = new QueryClient();
 

@@ -1,8 +1,8 @@
+import React from "react";
 import { useAuthContext } from "../../../context/AuthContext.jsx";
 import { extractTime } from "../../../utils/extractTime";
 import useConversation from "../zustand/useConversation";
 import profileAvtar from "../../../assets/profileAvtar.jpg";
-import React from "react";
 
 const Message = ({ message }) => {
   const { authUser } = useAuthContext();
@@ -28,41 +28,88 @@ const Message = ({ message }) => {
   const formattedTime = extractTime(message.createdAt);
 
   return (
-    <div
-      className={`chat relative ${fromMe ? "chat-end" : "chat-start"
-        } animate-[fadeInUp_0.25s_ease-out]`}
-    >
-      {/* Avatar */}
-      <div className="chat-image avatar">
-        <div className="w-11 h-11 rounded-full border border-rose-300 shadow-sm overflow-hidden">
+    <>
+      {/* INTERNAL STYLE – ONLY ALIGNMENT + BUBBLES */}
+      <style>{`
+        .msg-row {
+          display: flex;
+          width: 100%;
+          margin-bottom: 8px;
+        }
+
+        .msg-row.me {
+          justify-content: flex-end;
+        }
+
+        .msg-row.other {
+          justify-content: flex-start;
+        }
+
+        .msg-bubble-wrap {
+          max-width: 70%;
+        }
+
+        .msg-bubble {
+          padding: 8px 14px;
+          border-radius: 18px;
+          font-size: 0.95rem;
+          line-height: 1.4;
+          word-break: break-word;
+        }
+
+        /* opponent message = LEFT grey */
+        .msg-bubble.other {
+          background: #f3f4f6;
+          color: #111827;
+          border-top-left-radius: 4px;
+        }
+
+        /* your message = RIGHT red */
+        .msg-bubble.me {
+          background: #f04438;
+          color: #ffffff;
+          border-top-right-radius: 4px;
+        }
+
+        .msg-meta {
+          font-size: 0.75rem;
+          color: #9ca3af;
+          margin-top: 2px;
+        }
+
+        .msg-meta.me {
+          text-align: right;
+        }
+      `}</style>
+
+      <div className={`msg-row ${fromMe ? "me" : "other"}`}>
+
+        {/* Show avatar ONLY for opponent messages */}
+        {!fromMe && (
           <img
             src={profilePic || profileAvtar}
-            alt="User avatar"
-            className="object-cover w-full h-full"
+            alt="avatar"
+            className="rounded-circle me-2"
+            style={{
+              width: 28,
+              height: 28,
+              objectFit: "cover",
+              marginTop: "2px",
+            }}
           />
+        )}
+
+        <div className="msg-bubble-wrap">
+          <div className={`msg-bubble ${fromMe ? "me" : "other"}`}>
+            {message?.message}
+          </div>
+
+          <div className={`msg-meta ${fromMe ? "me" : ""}`}>
+            {formattedTime}
+          </div>
         </div>
       </div>
-
-      {/* Bubble */}
-      <div
-        className={` chat-bubble inline-block max-w-[75%] px-4 p-10 py-2 text-white 
-    rounded-2xl shadow-xl backdrop-blur-sm
-    ${fromMe
-            ? "bg-linear-to-br from-rose-500 to-pink-500 shadow-rose-900/20"
-            : "bg-linear-to-br from-slate-700 to-slate-800 shadow-black/30"
-          }
-  `}
-      >
-        <p className="leading-relaxed text-[0.95rem] wrap-break-word">
-          {message?.message}
-        </p>
-
-        <div className="text-[0.7rem] opacity-70 text-right mt-1 select-none">
-          {formattedTime}
-        </div>
-      </div>
-
-    </div>
+    </>
   );
 };
 
