@@ -14,7 +14,7 @@ main.dashboard {
 }
 
 /* LEFT PROFILE CARD --------------------------------------- */
-.profile-card {
+.profile-card-dashboard {
   background: #fff;
  // border-radius: 18px;
   border: 1px solid #f2d6db;
@@ -24,7 +24,7 @@ main.dashboard {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.profile-card::before {
+.profile-card-dashboard::before {
   content: "";
   position: absolute;
   inset: -40px;

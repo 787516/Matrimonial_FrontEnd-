@@ -248,7 +248,7 @@ const handlePhotoChange = (e) => {
         <div className="row gx-4">
           {/* LEFT SIDEBAR */}
           <aside className="col-lg-3 mb-4">
-            <div className="card profile-card p-4">
+            <div className="card profile-card-dashboard p-4">
               <div className="text-center">
                 <div className="profile-photo-wrapper mb-3">
                   <img

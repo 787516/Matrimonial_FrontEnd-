@@ -6,6 +6,9 @@ import React, {
   useState,
 } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useLogout } from "../hooks/AuthHook/useLogout";
+
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AuthContext = createContext(null);
 
@@ -19,6 +22,8 @@ export function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(undefined);
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
 
+  const queryClient = useQueryClient();
+   const logoutMutation = useLogout();
   // ------------------------------------------------------------
   // AUTO RESTORE USER FROM LOCALSTORAGE
   // ------------------------------------------------------------
@@ -91,14 +96,41 @@ export function AuthProvider({ children }) {
 
 
   // ------------------------------------------------------------
-  // LOGOUT
-  // ------------------------------------------------------------
-  const logoutUser = useCallback(() => {
+// LOGOUT (FIXED)
+// ------------------------------------------------------------
+const logout = async () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem("user"));
+    const refreshToken = stored?.auth?.refreshToken;
+
+    if (refreshToken) {
+      await logoutMutation.mutateAsync(refreshToken);
+    }
+
+    // CLEAR ALL AUTH
+    localStorage.removeItem("user");        // IMPORTANT ✔✔✔
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("authUser");
+
+    setAuthUser(null);
+    setIsLoggedIn(false);
+
+    // Clear React Query cache
+    queryClient.clear();
+
+    // Force UI update
+    window.location.href = "/login";
+  } catch (error) {
+    console.log("Logout error:", error);
+    // still force clear
     localStorage.removeItem("user");
     setAuthUser(null);
     setIsLoggedIn(false);
     window.location.href = "/login";
-  }, []);
+  }
+};
+
 
   return (
     <AuthContext.Provider
@@ -106,7 +138,7 @@ export function AuthProvider({ children }) {
         authUser,
         isLoggedIn,
         loginUser,
-        logoutUser,
+        logout,
         userId: authUser?.user?._id || null,
       }}
     >

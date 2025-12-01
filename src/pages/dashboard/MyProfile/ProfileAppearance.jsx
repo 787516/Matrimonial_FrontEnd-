@@ -8,14 +8,14 @@ import { useUserProfile } from "../../../hooks/ProfileHook/useUserDetailHook";
 import { useGetGallery, useUploadProfilePhoto } from "../../../hooks/GalleryHook/useGalleryHook";
 
 const ProfileAppearance = () => {
-    const [show, setShow] = React.useState(false);
+  const [show, setShow] = React.useState(false);
   const { authUser } = React.useContext(AuthContext);
 
   const userProfileId = authUser?.user?._id;
-    
+
   const { data: profile, isLoading } = useUserProfile(userProfileId);
   //console.log("profile detail", profile);
-  
+
   const { data: gallery } = useGetGallery(userProfileId);
   const profilePhotoFromGallery = gallery?.find((p) => p.isProfilePhoto) || null;
   const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
@@ -48,7 +48,6 @@ const ProfileAppearance = () => {
   // );
 
   // const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
-
 
 
   return (
@@ -89,11 +88,11 @@ const ProfileAppearance = () => {
 
             <div className="mp-buttons-row">
               <button
-  className="mp-btn-detailed"
-  onClick={() => setShow((prev) => !prev)}
->
-  {show ? "Hide Details" : "Detailed Profile"}
-</button>
+                className="mp-btn-detailed"
+                onClick={() => setShow((prev) => !prev)}
+              >
+                {show ? "Hide Details" : "Detailed Profile"}
+              </button>
 
               <div className="mp-verified-pill">
                 <span className="mp-verified-dot" />
@@ -155,114 +154,113 @@ const ProfileAppearance = () => {
       </div>
       <div className={`detail-card ${show ? "show" : ""}`}>
 
-  {/* TIMELINE LINE */}
-  <div className="timeline-line"></div>
+        {/* TIMELINE LINE */}
+        <div className="timeline-line"></div>
 
-  {/* ABOUT SECTION */}
-  <div className="detail-section">
-    <div className="detail-icon">
-      <i className="fa-solid fa-user-check"></i>
-    </div>
+        {/* ABOUT SECTION */}
+        <div className="detail-section">
+          <div className="detail-icon">
+            <i className="fa-solid fa-user-check"></i>
+          </div>
 
-    <h6 className="detail-title">About {profile?.userId?.firstName}</h6>
-    <p className="detail-sub">
-      {profile?.profession || "N/A"} | Profile created by {profile?.profileCreatedBy}
-    </p>
+          <h6 className="detail-title">About {profile?.userId?.firstName}</h6>
+          <p className="detail-sub">
+            {profile?.profession || "N/A"} | Profile created by {profile?.profileCreatedBy}
+          </p>
 
-    <p className="detail-text">
-      {profile?.aboutMe ||
-        "Hey, this user has not added an about section yet."}
-    </p>
+          <p className="detail-text">
+            {profile?.aboutMe ||
+              "Hey, this user has not added an about section yet."}
+          </p>
 
-    {/* CONTACT BOX */}
-    <div className="contact-box contact-locked">
-      <div className="locked-text">
-        <i className="fa-solid fa-lock"></i>
-        Contact details are locked. Upgrade to Premium to view.
+          {/* CONTACT BOX */}
+          <div className="contact-box contact-locked">
+            <div className="locked-text">
+              <i className="fa-solid fa-lock"></i>
+              Contact details are locked. Upgrade to Premium to view.
+            </div>
+
+            <button className="unlock-btn">
+              <i className="fa-solid fa-crown me-1"></i> Unlock with Premium
+            </button>
+          </div>
+        </div>
+
+        {/* LIFESTYLE */}
+        <div className="detail-section">
+          <div className="detail-icon">
+            <i className="fa-solid fa-mug-saucer"></i>
+          </div>
+
+          <h6 className="detail-title">Lifestyle</h6>
+
+          <p><span className="detail-label">Diet:</span> {profile?.diet}</p>
+          <p><span className="detail-label">Smoking:</span> {profile?.smoking}</p>
+          <p><span className="detail-label">Drinking:</span> {profile?.drinking}</p>
+        </div>
+
+        {/* EDUCATION & CAREER */}
+        <div className="detail-section">
+          <div className="detail-icon">
+            <i className="fa-solid fa-briefcase"></i>
+          </div>
+
+          <h6 className="detail-title">Education & Career</h6>
+
+          <p><span className="detail-label">Education:</span> {profile?.highestQualification}</p>
+          <p><span className="detail-label">Profession:</span> {profile?.workingWith}</p>
+          <p><span className="detail-label">Currently:</span> {profile?.workingStatus}</p>
+        </div>
+
+        {/* PARTNER PREFERENCES */}
+        <div className="detail-section">
+          <div className="detail-icon">
+            <i className="fa-solid fa-heart"></i>
+          </div>
+
+          <h6 className="detail-title">What He is Looking For</h6>
+
+          <div className="row">
+            <div className="col-md-6">
+              <p>
+                <span className="detail-label">Age:</span>{" "}
+                {profile?.partnerAge || "N/A"}
+              </p>
+              <p>
+                <span className="detail-label">Height:</span>{" "}
+                {profile?.partnerHeight || "N/A"}
+              </p>
+              <p>
+                <span className="detail-label">Marital Status:</span>{" "}
+                {profile?.partnerMaritalStatus || "N/A"}
+              </p>
+              <p>
+                <span className="detail-label">Religion / Community:</span>{" "}
+                {profile?.partnerReligion || "N/A"}
+              </p>
+            </div>
+
+            <div className="col-md-6">
+              <p>
+                <span className="detail-label">Mother Tongue:</span>{" "}
+                {profile?.partnerMotherTongue}
+              </p>
+              <p>
+                <span className="detail-label">Location:</span>{" "}
+                {profile?.partnerLocation}
+              </p>
+              <p>
+                <span className="detail-label">Working With:</span>{" "}
+                {profile?.partnerWorkingWith}
+              </p>
+              <p>
+                <span className="detail-label">Annual Income:</span>{" "}
+                {profile?.partnerIncome}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <button className="unlock-btn">
-        <i className="fa-solid fa-crown me-1"></i> Unlock with Premium
-      </button>
-    </div>
-  </div>
-
-  {/* LIFESTYLE */}
-  <div className="detail-section">
-    <div className="detail-icon">
-      <i className="fa-solid fa-mug-saucer"></i>
-    </div>
-
-    <h6 className="detail-title">Lifestyle</h6>
-
-    <p><span className="detail-label">Diet:</span> {profile?.diet}</p>
-    <p><span className="detail-label">Smoking:</span> {profile?.smoking}</p>
-    <p><span className="detail-label">Drinking:</span> {profile?.drinking}</p>
-  </div>
-
-  {/* EDUCATION & CAREER */}
-  <div className="detail-section">
-    <div className="detail-icon">
-      <i className="fa-solid fa-briefcase"></i>
-    </div>
-
-    <h6 className="detail-title">Education & Career</h6>
-
-    <p><span className="detail-label">Education:</span> {profile?.highestQualification}</p>
-    <p><span className="detail-label">Profession:</span> {profile?.workingWith}</p>
-    <p><span className="detail-label">Currently:</span> {profile?.workingStatus}</p>
-  </div>
-
-  {/* PARTNER PREFERENCES */}
-  <div className="detail-section">
-    <div className="detail-icon">
-      <i className="fa-solid fa-heart"></i>
-    </div>
-
-    <h6 className="detail-title">What He is Looking For</h6>
-
-    <div className="row">
-      <div className="col-md-6">
-        <p>
-          <span className="detail-label">Age:</span>{" "}
-          {profile?.partnerAge || "N/A"}
-        </p>
-        <p>
-          <span className="detail-label">Height:</span>{" "}
-          {profile?.partnerHeight || "N/A"}
-        </p>
-        <p>
-          <span className="detail-label">Marital Status:</span>{" "}
-          {profile?.partnerMaritalStatus || "N/A"}
-        </p>
-        <p>
-          <span className="detail-label">Religion / Community:</span>{" "}
-          {profile?.partnerReligion || "N/A"}
-        </p>
-      </div>
-
-      <div className="col-md-6">
-        <p>
-          <span className="detail-label">Mother Tongue:</span>{" "}
-          {profile?.partnerMotherTongue}
-        </p>
-        <p>
-          <span className="detail-label">Location:</span>{" "}
-          {profile?.partnerLocation}
-        </p>
-        <p>
-          <span className="detail-label">Working With:</span>{" "}
-          {profile?.partnerWorkingWith}
-        </p>
-        <p>
-          <span className="detail-label">Annual Income:</span>{" "}
-          {profile?.partnerIncome}
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
     </div>
   );
 };

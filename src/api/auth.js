@@ -42,7 +42,11 @@ export const resetPasswordApi = async (formData) => {
 };
 
 // LOGOUT
+// export const logoutUserApi = async (refreshToken) => {
+//   const res = await axios.post(`${API}/logout`, { refreshToken });
+//   return res.data;
+// };
 export const logoutUserApi = async (refreshToken) => {
-  const res = await axios.post(`${API}/logout`, { refreshToken });
+  const res = await axiosInstance.post("/logout", { refreshToken });
   return res.data;
 };

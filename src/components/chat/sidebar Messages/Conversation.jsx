@@ -1,10 +1,10 @@
+import React from "react";
 import { useSocketContext } from "../../../context/SocketContext";
 import useConversation from "../zustand/useConversation";
 import { useAuthContext } from "../../../context/AuthContext.jsx";
 import profilrPicPlaceholder from "../../../assets/profileAvtar.jpg";
-import React from "react";
 
-const Conversation = ({ conversation, lastIdx, emoji }) => {
+const Conversation = ({ conversation, lastIdx }) => {
   const {
     selectedConversation,
     setSelectedConversation,
@@ -23,6 +23,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
     selectedConversation?.roomId === conversation?.roomId;
 
   const isOnline = onlineUsers.includes(conversation._id);
+  const unreadCount = unread[conversation._id] || 0;
 
   const handleClick = () => {
     setSelectedConversation(conversation);
@@ -37,54 +38,155 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
     }
   };
 
+  const lastMsgText =
+    conversation?.lastMessage ||
+    conversation?.preview ||
+    conversation?.about ||
+    "";
+
   return (
     <>
+      {/* Style ONLY for conversation row – looks exactly like your screenshot */}
+      <style>{`
+        .conv-item {
+          display: flex;
+          align-items: center;
+          padding: 10px 14px;
+          cursor: pointer;
+          background: #ffffff;
+          border-bottom: 1px solid #f3f4f6;
+          transition: background 0.15s ease-in-out;
+        }
+        .conv-item:hover {
+          background: #f9fafb;
+        }
+
+        .conv-active-line {
+          width: 3px;
+          align-self: stretch;
+          border-radius: 999px;
+          background: transparent;
+          margin-right: 10px;
+        }
+        .conv-item.conv-active .conv-active-line {
+          background: #2563eb; /* blue line like screenshot */
+        }
+
+        .conv-avatar-wrap {
+          position: relative;
+          margin-right: 10px;
+        }
+
+        .conv-avatar {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .conv-online-dot {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #22c55e; /* green */
+          border: 2px solid #ffffff;
+        }
+
+        .conv-main {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          min-width: 0;
+        }
+
+        .conv-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .conv-name {
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: #111827;
+        }
+
+        .conv-time {
+          font-size: 0.75rem;
+          color: #9ca3af;
+          white-space: nowrap;
+          margin-left: 8px;
+        }
+
+        .conv-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .conv-msg {
+          font-size: 0.83rem;
+          color: #6b7280;
+          max-width: 170px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .conv-badge {
+          min-width: 20px;
+          height: 20px;
+          border-radius: 999px;
+          font-size: 0.75rem;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: #ef4444; /* red circle */
+          color: #ffffff;
+          margin-left: 8px;
+        }
+      `}</style>
+
       <div
-	className={`flex gap-3 items-center hover:bg-linear-to-r hover:from-rose-500/20 hover:to-pink-500/20 rounded-2xl p-4 cursor-pointer transition-all duration-300 group
-		${isSelected ? "bg-linear-to-r from-rose-600/40 to-pink-600/40 border-l-4 border-rose-400 shadow-lg" : "hover:shadow-xl"}
-	`}
-	onClick={handleClick}
->
-        <div className={`avatar ${isOnline ? "online" : "offline"}`}>
-         <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-rose-400/50">
-  <img
-    src={conversation.profilePic || profilrPicPlaceholder}
-    alt="user avatar"
-    className="w-full h-full object-cover rounded-full"
-  />
-</div>
+        className={`conv-item ${isSelected ? "conv-active" : ""}`}
+        onClick={handleClick}
+      >
+        {/* LEFT BLUE LINE */}
+        <div className="conv-active-line" />
+
+        {/* Avatar */}
+        <div className="conv-avatar-wrap">
+          <img
+            src={conversation.profilePic || profilrPicPlaceholder}
+            alt="user avatar"
+            className="conv-avatar"
+          />
+          {isOnline && <span className="conv-online-dot" />}
         </div>
 
-        <div className="flex flex-col flex-1">
-          <div className="flex gap-3 justify-between items-center">
-            <p
-              className={`font-bold ${
-                isSelected ? "text-white" : "text-gray-200"
-              }`}
-            >
-              {conversation.fullName}
-            </p>
+        {/* Text area */}
+        <div className="conv-main">
+          <div className="conv-top">
+            <span className="conv-name">{conversation.fullName}</span>
 
-            <div className="flex items-center gap-2">
-              <span className="text-xl">{emoji}</span>
-
-              {unread[conversation._id] > 0 && (
-                <span className="bg-rose-500 text-white text-xs px-2 py-1 rounded-full">
-                  {unread[conversation._id]}
-                </span>
-              )}
-            </div>
+            {conversation.lastTime && (
+              <span className="conv-time">{conversation.lastTime}</span>
+            )}
           </div>
 
-          {isOnline && (
-            <span className="text-xs text-rose-400 font-semibold">
-              ● Online
-            </span>
-          )}
+          <div className="conv-bottom">
+            <span className="conv-msg">{lastMsgText}</span>
+
+            {unreadCount > 0 && (
+              <span className="conv-badge">{unreadCount}</span>
+            )}
+          </div>
         </div>
       </div>
-
-      {!lastIdx && <div className="divider my-0 py-2 h-1" />}
     </>
   );
 };

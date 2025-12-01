@@ -1,0 +1,225 @@
+:root {
+  --primary-gradient: linear-gradient(to right, #d31027, #ea384d);
+  --alice-blue: #f7faff;
+  --text-dark: #333;
+  --text-muted: #666;
+  --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* MAIN WRAPPER */
+.matches-container {
+  padding: 40px 30px;
+  background: var(--alice-blue);
+}
+
+/* GRID LAYOUT */
+.matches-grid {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 28px;
+}
+
+/* -------------------------------------------------------
+   FILTER SIDEBAR (PREMIUM COMPACT LOOK)
+------------------------------------------------------- */
+.filter-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+}
+
+.filter-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--text-dark);
+}
+
+.filter-select {
+  display: flex;
+  align-items: center;
+  border: 1.4px solid #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #fafafa;
+  margin-bottom: 10px;
+}
+
+.filter-icon {
+  margin-right: 8px;
+  color: #d31027;
+  font-size: 13px;
+}
+
+.filter-select select {
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  color: #333;
+  outline: none;
+  flex: 1;
+  padding: 4px 0;
+}
+
+/* Buttons */
+.apply-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 0;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  background: var(--primary-gradient);
+  color: #fff;
+}
+
+.reset-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 0;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1.5px solid #d1d5db;
+  background: #fff;
+}
+
+/* -------------------------------------------------------
+   RIGHT SIDE - CARDS AREA
+------------------------------------------------------- */
+.card-container {
+  width: 100%;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.top-row h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* GRID FOR CARDS */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+/* -------------------------------------------------------
+   MATCH PROFILE CARD (COMPACT PREMIUM)
+------------------------------------------------------- */
+.profile-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+  transition: 0.25s ease;
+  position: relative;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(255, 0, 0, 0.18);
+}
+
+/* Image */
+.profile-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 6px;
+  border: 4px solid #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Badge */
+.match-badge {
+  background: #ffe6ea;
+  color: #d31027;
+  font-size: 0.65rem;
+  padding: 4px 8px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* Text */
+.name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-top: 4px;
+}
+
+.profile-card p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 2px 0;
+}
+
+/* Buttons */
+.btn-main {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.send-btn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+
+  align-items: center;      /* <-- Fix vertical centering */
+  justify-content: center;  /* <-- Horizontally center everything */
+  gap: 8px;   
+}
+
+.send-btn.sent {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+
+/* Animation */
+.send-btn.sending::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1s infinite linear;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}

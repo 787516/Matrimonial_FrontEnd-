@@ -12,23 +12,26 @@ import Register from '../pages/auth/Register.jsx';
 import OTPVerify from '../pages/auth/OTPVerify.jsx';
 import ForgotPassword from '../pages/auth/ForgotPassword.jsx';
 // import ResetPassword from '../pages/auth/ResetPassword';
- 
+
 // Dashboard Pages
 import Dashboard from '../pages/dashboard/Dashboard';
 import Preferences from '../pages/dashboard/Preferences.jsx';
 import GalleryUpload from '../pages/dashboard/GalleryUpload.jsx';
-import Matches from '../pages/dashboard/Matches';
+import Matches from '../pages/Maches/Matches.jsx';
 //import MyProfile from '../pages/dashboard/MyProfile';
 import ProfileAppearance from '../pages/dashboard/MyProfile/ProfileAppearance.jsx';
 import ProfileAboutMe from '../pages/dashboard/MyProfile/ProfileAboutMe.jsx';
 import ProfileEditPersonal from '../pages/dashboard/MyProfile/ProfileEditPersonal.jsx';
 import ProfileHoroscope from '../pages/dashboard/MyProfile/ProfileHoroscope.jsx';
-import ProfileReligiousBackground  from "../pages/dashboard/MyProfile/ProfileReligiousBackground.jsx"
+import ProfileReligiousBackground from "../pages/dashboard/MyProfile/ProfileReligiousBackground.jsx"
 import ProfileEducationBackground from "../pages/dashboard/MyProfile/ProfileEducationBackground.jsx"
 import ProfileLocation from "../pages/dashboard/MyProfile/ProfileLocation.jsx"
 import ProfileLifeStyle from "../pages/dashboard/MyProfile/ProfileLifeStyle.jsx"
 import EditProfile from '../pages/dashboard/EditProfile';
-
+//settings page
+import AccountSettings from "../pages/dashboard/Settings/AccountSettings.jsx";
+import DeactivateProfile from "../pages/dashboard/Settings/DeactivateProfile.jsx"
+import DeleteProfile from "../pages/dashboard/Settings/DeleteProfile.jsx";
 // Search Pages
 import Search from '../pages/search/Search';
 
@@ -44,7 +47,7 @@ import PaymentFailed from '../pages/plans/PaymentFailed';
 // Settings Pages
 import Settings from '../pages/settings/Settings';
 import Privacy from '../pages/settings/Privacy';
-
+import NotificationsPage from "../pages/settings/NotificationsPage.jsx";
 // Support Pages
 import ContactUs from '../pages/support/ContactUs';
 
@@ -53,7 +56,7 @@ import Landing from '../pages/home/Landing';
 import AboutUs from '../pages/home/AboutUs';
 
 const AppRoutes = () => {
- 
+
   return (
     <Routes>
       {/* Public Routes */}
@@ -145,7 +148,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       /> */}
-      
+
       <Route
         path="/matches"
         element={
@@ -217,7 +220,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-       <Route
+      <Route
         path="/profile/location"
         element={
           <ProtectedRoute>
@@ -227,7 +230,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-            <Route
+      <Route
         path="/profile/lifestyle"
         element={
           <ProtectedRoute>
@@ -237,7 +240,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
         path="/partner-preferences"
         element={
@@ -248,6 +251,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      
       <Route
         path="/GalleryUpload"
         element={
@@ -271,8 +275,8 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Chat Routes */}
-      <Route
+       {/* Chat Routes */}
+       <Route
         path="/chat"
         element={
           <ProtectedRoute>
@@ -281,8 +285,9 @@ const AppRoutes = () => {
             </DashboardLayout>
           </ProtectedRoute>
         }
-      />
-      <Route
+       />
+      
+       <Route
         path="/chat/:conversationId"
         element={
           <ProtectedRoute>
@@ -327,15 +332,48 @@ const AppRoutes = () => {
 
       {/* Settings Routes */}
       <Route
-        path="/settings"
+        path="/settings/account"
         element={
           <ProtectedRoute>
             <DashboardLayout>
-              <Settings />
+              <AccountSettings />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      /> 
+
+       <Route
+        path="/settings/deactivate"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <DeactivateProfile />
             </DashboardLayout>
           </ProtectedRoute>
         }
       />
+      
+       <Route
+        path="/settings/delete"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <DeleteProfile />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <NotificationsPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/privacy"
         element={

@@ -3,6 +3,7 @@ import "./SubNavbar.css";
 import React from "react";
 
 const SubNavbar = () => {
+  
   return (
     <nav className="dashboard-subnav">
       <ul>
@@ -10,8 +11,8 @@ const SubNavbar = () => {
         <li><NavLink to="/partner-preferences">Partner Preference</NavLink></li>
         <li><NavLink to="/GalleryUpload">My Photos</NavLink></li>
         <li><NavLink to="/profile/appearance">My Profile</NavLink></li>
-        <li><NavLink to="/inbox">Inbox</NavLink></li>
-        <li><NavLink to="/settings">Settings</NavLink></li>
+        <li><NavLink to="/chat">Inbox</NavLink></li>
+        <li><NavLink to="/settings/account">Settings</NavLink></li>
       </ul>
     </nav>
   );
