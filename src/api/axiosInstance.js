@@ -1,6 +1,8 @@
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const axiosInstance = axios.create({
+  
   baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:1818/api",
   timeout: 15000,
   headers: { "Content-Type": "application/json" },
@@ -26,7 +28,10 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error?.response?.status === 401) {
       localStorage.removeItem("user");
-      window.location.href = "/login";
+      //window.location.href = "/login";
+      navigate("/login");  // using React Router
+
+      
     }
     return Promise.reject(error);
   }

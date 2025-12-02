@@ -45,9 +45,9 @@ import PaymentSuccess from '../pages/plans/PaymentSuccess';
 import PaymentFailed from '../pages/plans/PaymentFailed';
 
 // Settings Pages
-import Settings from '../pages/settings/Settings';
-import Privacy from '../pages/settings/Privacy';
-import NotificationsPage from "../pages/settings/NotificationsPage.jsx";
+import Settings from '../pages/settings Notification/Settings.jsx';
+//import Privacy from '../pages/settings Notification/Privacy.js';
+import NotificationsPage from "../pages/settings Notification/NotificationsPage.jsx";
 // Support Pages
 import ContactUs from '../pages/support/ContactUs';
 
@@ -373,7 +373,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-
+{/* 
       <Route
         path="/privacy"
         element={
@@ -383,7 +383,7 @@ const AppRoutes = () => {
             </DashboardLayout>
           </ProtectedRoute>
         }
-      />
+      /> */}
 
       {/* 404 Route */}
       <Route path="*" element={<div>404 - Page Not Found</div>} />

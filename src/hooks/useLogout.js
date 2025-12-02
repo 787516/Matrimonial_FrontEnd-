@@ -9,7 +9,9 @@ const useLogout = () => {
     setLoading(true);
     try {
       logoutUser();
-      window.location.href = "/login";
+      //window.location.href = "/login";
+      navigate("/login");  // using React Router
+
     } catch (err) {
       console.error("Logout failed:", err);
       setLoading(false);

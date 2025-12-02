@@ -19,11 +19,11 @@ const Dashboard = () => {
   const [showMatches, setShowMatches] = useState(false);
   const photoInputRef = useRef(null);
 
- const uploadProfilePhoto = useUploadProfilePhoto();
-const { data: gallery } = useGetGallery(userProfileId);
+  const uploadProfilePhoto = useUploadProfilePhoto();
+  const { data: gallery } = useGetGallery(userProfileId);
 
-const profilePhotoFromGallery = gallery?.find((p) => p.isProfilePhoto) || null;
-const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
+  const profilePhotoFromGallery = gallery?.find((p) => p.isProfilePhoto) || null;
+  const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
 
 
   // ✔ Safe fallback: if profile is loaded use that; else fallback to authUser
@@ -61,14 +61,14 @@ const finalProfilePhoto = profilePhotoFromGallery?.imageUrl || AvtarPhoto;
     photoInputRef.current?.click();
   };
 
-const handlePhotoChange = (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+  const handlePhotoChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  uploadProfilePhoto.mutate(file);
+    uploadProfilePhoto.mutate(file);
 
-  setShowToast(true);
-};
+    setShowToast(true);
+  };
 
 
   const handleToggleMatches = () => {

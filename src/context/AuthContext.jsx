@@ -107,29 +107,32 @@ const logout = async () => {
       await logoutMutation.mutateAsync(refreshToken);
     }
 
-    // CLEAR ALL AUTH
-    localStorage.removeItem("user");        // IMPORTANT ✔✔✔
+    // Clear storage
+    localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("authUser");
 
+    // Update auth states
     setAuthUser(null);
     setIsLoggedIn(false);
 
-    // Clear React Query cache
-    queryClient.clear();
+    // Optional: Clear queries
+    queryClient.removeQueries(); // better than clear()
 
-    // Force UI update
-    window.location.href = "/login";
+    // 🚀 Navigate WITHOUT reloading
+    navigate("/login");  
   } catch (error) {
     console.log("Logout error:", error);
-    // still force clear
+
     localStorage.removeItem("user");
     setAuthUser(null);
     setIsLoggedIn(false);
-    window.location.href = "/login";
+
+    navigate("/login");
   }
 };
+
 
 
   return (
@@ -140,9 +143,28 @@ const logout = async () => {
         loginUser,
         logout,
         userId: authUser?.user?._id || null,
+        updateEmailInContext,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
+
+
+const updateEmailInContext = (newEmail) => {
+  setAuthUser((prev) => {
+    if (!prev) return prev;
+
+    const updated = {
+      ...prev,
+      user: {
+        ...prev.user,
+        email: newEmail,
+      },
+    };
+
+    localStorage.setItem("user", JSON.stringify(updated));
+    return updated;
+  });
+};
