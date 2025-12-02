@@ -13,21 +13,21 @@ import logo from "../../assets/Logo.png";
 import bgVideo from "../../assets/videos/bgVideo.mp4";
 
 const OTPVerify = () => {
-  
+
   const { authUser } = React.useContext(AuthContext);
-  
+
 
   const { state } = useLocation();
   const navigate = useNavigate();
-  
+
   const email = state?.email;
   const purpose = state?.purpose; // <-- IMPORTANT
 
   const verifyOtpMutation = useVerifyOtp();
   const verifyEmailChange = useVerifyEmailChange();
-  
+
   const { updateEmailInContext } = useContext(AuthContext);
- 
+
   const inputsRef = useRef([]);
   const [timer, setTimer] = useState(60);
 
@@ -43,44 +43,48 @@ const OTPVerify = () => {
     }),
 
     onSubmit: (values) => {
-  const finalOtp = values.otp.join("");
+      const finalOtp = values.otp.join("");
 
-  if (purpose === "changeEmail") {
-    verifyEmailChange.mutate(finalOtp, {
-      onSuccess: () => {
-        const stored = JSON.parse(localStorage.getItem("user"));
-        
-        if (stored?.user) {
-          stored.user.email = stored.user.pendingEmail;
-          stored.user.pendingEmail = null;
-          localStorage.setItem("user", JSON.stringify(stored));
-        }
+      if (purpose === "changeEmail") {
+        verifyEmailChange.mutate(finalOtp, {
+          onSuccess: () => {
+            const stored = JSON.parse(localStorage.getItem("user"));
 
-        updateEmailInContext(stored.user.email);
+            if (stored?.user) {
+              stored.user.email = stored.user.pendingEmail;
+              stored.user.pendingEmail = null;
+              localStorage.setItem("user", JSON.stringify(stored));
+            }
 
-        alert("Email updated successfully!");
-        navigate("/settings/account");
+            updateEmailInContext(stored.user.email);
+
+            alert("Email updated successfully!");
+
+            setTimeout(() => {
+              navigate("/settings/account");
+            }, 50);
+
+          }
+        });
+
+        return; // stop here
       }
-    });
 
-    return; // stop here
-  }
-
-  // NORMAL OTP FLOWS
-  verifyOtpMutation.mutate(
-    { email, otp: finalOtp, purpose },
-    {
-      onSuccess: () => {
-        if (purpose === "register") {
-          navigate("/set-password", { state: { email, purpose } });
+      // NORMAL OTP FLOWS
+      verifyOtpMutation.mutate(
+        { email, otp: finalOtp, purpose },
+        {
+          onSuccess: () => {
+            if (purpose === "register") {
+              navigate("/set-password", { state: { email, purpose } });
+            }
+            if (purpose === "forgot") {
+              navigate("/reset-password", { state: { email, purpose } });
+            }
+          }
         }
-        if (purpose === "forgot") {
-          navigate("/reset-password", { state: { email, purpose } });
-        }
-      }
+      );
     }
-  );
-}
 
   });
 
@@ -174,14 +178,16 @@ const OTPVerify = () => {
               </p>
             )}
           </div>
-
           <button
             type="submit"
             className="btn-grad"
-            disabled={verifyOtpMutation.isPending}
+            disabled={verifyOtpMutation.isPending || verifyEmailChange.isPending}
           >
-            {verifyOtpMutation.isPending ? "Verifying..." : "Verify"}
+            {verifyOtpMutation.isPending || verifyEmailChange.isPending
+              ? "Verifying..."
+              : "Verify"}
           </button>
+
         </form>
       </div>
     </div>

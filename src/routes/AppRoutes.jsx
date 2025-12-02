@@ -53,7 +53,7 @@ import ContactUs from '../pages/support/ContactUs';
 
 // Home Pages
 import Landing from '../pages/home/Landing';
-import AboutUs from '../pages/home/AboutUs';
+import AboutUs from '../pages/AboutUs/AboutUs.jsx';
 
 const AppRoutes = () => {
 

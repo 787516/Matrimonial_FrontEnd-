@@ -69,7 +69,7 @@ const Navbar = () => {
             <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
 
             {/* About us dropdown */}
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                 About Us
               </a>
@@ -82,7 +82,8 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" to="/report-misuse">Report Misuse</Link></li>
                 <li><Link className="dropdown-item" to="/contact">Contact Us</Link></li>
               </ul>
-            </li>
+            </li> */}
+             <li className="nav-item"><Link className="nav-link" to="/about">About Us</Link></li>
 
             <li className="nav-item"><Link className="nav-link" to="/membership">Membership Plan</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/matches">Your Matches</Link></li>

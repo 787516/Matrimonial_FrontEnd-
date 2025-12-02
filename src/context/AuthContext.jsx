@@ -7,8 +7,8 @@ import React, {
 } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useLogout } from "../hooks/AuthHook/useLogout";
-
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext(null);
 
@@ -23,7 +23,9 @@ export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
 
   const queryClient = useQueryClient();
-   const logoutMutation = useLogout();
+  const logoutMutation = useLogout();
+  const navigate = useNavigate();
+
   // ------------------------------------------------------------
   // AUTO RESTORE USER FROM LOCALSTORAGE
   // ------------------------------------------------------------
@@ -66,74 +68,87 @@ export function AuthProvider({ children }) {
   }, []);
 
   // ------------------------------------------------------------
-  // LOGIN HANDLER (stores full backend response)
+  // LOGIN HANDLER
   // ------------------------------------------------------------
- const loginUser = useCallback((apiResponse) => {
-  console.log("AuthContext received:", apiResponse);
+  const loginUser = useCallback((apiResponse) => {
+    console.log("AuthContext received:", apiResponse);
 
-  // Must contain token + userId
-  if (!apiResponse?.auth?.accessToken || !apiResponse?.user?._id) {
-    console.error("Invalid login payload:", apiResponse);
-    return;
-  }
-
-  const finalData = {
-    auth: apiResponse.auth,
-    user: apiResponse.user,
-    profile: apiResponse.profile || null,
-    preferences: apiResponse.preferences || null,
-    gallery: apiResponse.gallery || [],
-    subscription: apiResponse.subscription || null,
-  };
-
-  localStorage.setItem("user", JSON.stringify(finalData));
-
-  setAuthUser(finalData);
-  setIsLoggedIn(true);
-
-  return finalData;
-}, []);
-
-
-  // ------------------------------------------------------------
-// LOGOUT (FIXED)
-// ------------------------------------------------------------
-const logout = async () => {
-  try {
-    const stored = JSON.parse(localStorage.getItem("user"));
-    const refreshToken = stored?.auth?.refreshToken;
-
-    if (refreshToken) {
-      await logoutMutation.mutateAsync(refreshToken);
+    if (!apiResponse?.auth?.accessToken || !apiResponse?.user?._id) {
+      console.error("Invalid login payload:", apiResponse);
+      return;
     }
 
-    // Clear storage
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("authUser");
+    const finalData = {
+      auth: apiResponse.auth,
+      user: apiResponse.user,
+      profile: apiResponse.profile || null,
+      preferences: apiResponse.preferences || null,
+      gallery: apiResponse.gallery || [],
+      subscription: apiResponse.subscription || null,
+    };
 
-    // Update auth states
-    setAuthUser(null);
-    setIsLoggedIn(false);
+    localStorage.setItem("user", JSON.stringify(finalData));
 
-    // Optional: Clear queries
-    queryClient.removeQueries(); // better than clear()
+    setAuthUser(finalData);
+    setIsLoggedIn(true);
 
-    // 🚀 Navigate WITHOUT reloading
-    navigate("/login");  
-  } catch (error) {
-    console.log("Logout error:", error);
+    return finalData;
+  }, []);
 
-    localStorage.removeItem("user");
-    setAuthUser(null);
-    setIsLoggedIn(false);
+  // ------------------------------------------------------------
+  // FIXED: UPDATE EMAIL IN CONTEXT (Moved inside component)
+  // ------------------------------------------------------------
+  const updateEmailInContext = (newEmail) => {
+    setAuthUser((prev) => {
+      if (!prev) return prev;
 
-    navigate("/login");
-  }
-};
+      const updated = {
+        ...prev,
+        user: {
+          ...prev.user,
+          email: newEmail,
+        },
+      };
 
+      localStorage.setItem("user", JSON.stringify(updated));
+      return updated;
+    });
+  };
 
+  // ------------------------------------------------------------
+  // LOGOUT
+  // ------------------------------------------------------------
+  const logout = async () => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("user"));
+      const refreshToken = stored?.auth?.refreshToken;
+
+      if (refreshToken) {
+        await logoutMutation.mutateAsync(refreshToken);
+      }
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("authUser");
+
+      setAuthUser(null);
+      setIsLoggedIn(false);
+
+      queryClient.removeQueries();
+
+      navigate("/login");
+
+    } catch (error) {
+      console.log("Logout error:", error);
+
+      localStorage.removeItem("user");
+      setAuthUser(null);
+      setIsLoggedIn(false);
+
+      navigate("/login");
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -143,28 +158,10 @@ const logout = async () => {
         loginUser,
         logout,
         userId: authUser?.user?._id || null,
-        updateEmailInContext,
+        updateEmailInContext, // <-- NOW INCLUDED PROPERLY
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
-
-
-const updateEmailInContext = (newEmail) => {
-  setAuthUser((prev) => {
-    if (!prev) return prev;
-
-    const updated = {
-      ...prev,
-      user: {
-        ...prev.user,
-        email: newEmail,
-      },
-    };
-
-    localStorage.setItem("user", JSON.stringify(updated));
-    return updated;
-  });
-};

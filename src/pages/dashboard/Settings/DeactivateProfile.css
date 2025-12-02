@@ -28,6 +28,7 @@
   font-size: 0.95rem;
 }
 
+
 /* Dropdown */
 .deactivate-select {
   width: 260px;
@@ -41,6 +42,7 @@
   background-size: 12px;
   appearance: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color:#000;
 }
 
 .deactivate-select:focus {
