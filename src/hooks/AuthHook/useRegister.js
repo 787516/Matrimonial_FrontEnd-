@@ -9,19 +9,30 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: registerUserApi,
 
-      onSuccess: (response, variables) => {
-      alert(response?.data?.message || "OTP sent!");
+    onSuccess: (response, variables) => {
+      const message =
+        response?.data?.message ||
+        "OTP sent successfully. Please check your email.";
 
-      // variables contains the form data → pass email to OTP page
-      // navigate("/otp-verify", { state: { email: variables.email } });
+      alert(message);
+
+      // Navigate to OTP verify page with email + purpose
       navigate("/otp-verify", {
-        state: { email: variables.email, purpose: "register" },
+        state: {
+          email: variables.email.toLowerCase().trim(),
+          purpose: "register",
+        },
       });
     },
 
     onError: (error) => {
-      alert(error?.response?.data?.message || "Registration failed!");
-      console.log("error from re", error);
+      console.error("Registration Error:", error);
+
+      const msg =
+        error?.response?.data?.message ||
+        "Registration failed. Please try again.";
+
+      alert(msg);
     },
   });
 };

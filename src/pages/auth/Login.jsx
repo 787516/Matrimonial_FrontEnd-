@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { useLogin } from "../../hooks/AuthHook/useLogin";
-import { useForgotPassword } from "../../hooks/AuthHook/useForgotPassword";   // <-- ADD
+import { useForgotPassword } from "../../hooks/AuthHook/useForgotPassword";
+
 import logo from "../../assets/Logo.png";
 import bgVideo from "../../assets/videos/bgVideo.mp4";
+
 import { useNavigate } from "react-router-dom";
 import "./auth.css";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const loginMutation = useLogin(navigate);
-  const forgotMutation = useForgotPassword();  // <-- ADD
+  const loginMutation = useLogin();
+  const forgotMutation = useForgotPassword();
 
+  // ------------------ VALIDATION ------------------
   const loginSchema = Yup.object({
     username: Yup.string()
       .test(
@@ -34,6 +37,7 @@ const Login = () => {
       .required("Password is required"),
   });
 
+  // ------------------ FORMIK ------------------
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -43,23 +47,33 @@ const Login = () => {
     validationSchema: loginSchema,
 
     onSubmit: (values) => {
+      const email = values.username.toLowerCase().trim();
+
       loginMutation.mutate({
-        email: values.username,
+        email,
         password: values.password,
       });
     },
   });
 
   // -------------------------------------------------------------
-  // FORGOT PASSWORD FLOW (NEW)
+  // FORGOT PASSWORD FLOW (SEND OTP)
   // -------------------------------------------------------------
   const handleForgot = () => {
-    const email = formik.values.username;
+    let email = formik.values.username;
 
     if (!email) {
       alert("Please enter your email first");
       return;
     }
+
+    // Forgot password MUST accept only email — mobile not allowed
+    if (!email.includes("@")) {
+      alert("Forgot Password works only with email. Please enter a valid email.");
+      return;
+    }
+
+    email = email.toLowerCase().trim();
 
     forgotMutation.mutate(
       { email },
@@ -81,7 +95,6 @@ const Login = () => {
 
       <div className="auth-wrapper">
         <div className="page login-container active">
-
           <img src={logo} alt="Logo" className="logo-img" />
 
           <div className="Login_head">
@@ -92,6 +105,7 @@ const Login = () => {
             "Your Story Could Be The Next Beautiful Beginning"
           </p>
 
+          {/* ------------------ LOGIN FORM ------------------ */}
           <form onSubmit={formik.handleSubmit}>
             {/* USERNAME */}
             <div className="form-group">
@@ -137,6 +151,7 @@ const Login = () => {
             </button>
           </form>
 
+          {/* ------------------ EXTRAS ------------------ */}
           <div className="extras">
             <button
               className="link-button"
@@ -146,9 +161,13 @@ const Login = () => {
               {forgotMutation.isPending ? "OTP Sending..." : "Forgot Password?"}
             </button>
 
-            <a href="#">Register</a>
+            <button
+              className="link-button"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </button>
           </div>
-
         </div>
       </div>
     </div>

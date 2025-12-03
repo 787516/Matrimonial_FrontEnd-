@@ -83,12 +83,35 @@ main.dashboard {
   color: #888;
 }
 
-.btn-edit-photo {
+/* .btn-edit-photo {
   margin-top: 6px;
   font-size: 0.8rem;
   border-radius: 999px;
   padding-inline: 18px;
   
+} */
+.btnEdit {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+
+  /* THEME COLORS */
+  background: linear-gradient(to right, #D31027, #EA384D);
+  color: #fff;
+
+  /* Smoothness */
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(211, 16, 39, 0.25);
+}
+
+.btnEdit:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 16px rgba(211, 16, 39, 0.35);
+  opacity: 0.95;
 }
 
 .account-label {

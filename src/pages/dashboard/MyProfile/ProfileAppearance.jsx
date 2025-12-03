@@ -8,6 +8,7 @@ import { useUserProfile } from "../../../hooks/ProfileHook/useUserDetailHook";
 import { useGetGallery, useUploadProfilePhoto } from "../../../hooks/GalleryHook/useGalleryHook";
 
 const ProfileAppearance = () => {
+  
   const [show, setShow] = React.useState(false);
   const { authUser } = React.useContext(AuthContext);
 
@@ -151,7 +152,7 @@ const ProfileAppearance = () => {
             </div>
           </div>
         </section>
-      </div>
+      
       <div className={`detail-card ${show ? "show" : ""}`}>
 
         {/* TIMELINE LINE */}
@@ -260,6 +261,7 @@ const ProfileAppearance = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

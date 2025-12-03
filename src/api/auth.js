@@ -17,6 +17,12 @@ export const loginUserApi = async (formData) => {
   return res.data;
 };
 
+export const resendOtpApi = async (data) => {
+ const res = await axios.post(`${API}/auth/resend-otp`, data);
+ return res.data;
+}
+
+
 // VERIFY OTP
 export const verifyOtpApi = async (formData) => {
   const res = await axios.post(`${API}/auth/verify-otp`, formData);

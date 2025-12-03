@@ -2,29 +2,28 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import { useVerifyOtp } from "../../hooks/AuthHook/useVerifyOtp";
 import { useVerifyEmailChange } from "../../hooks/SettingsHook/useAccountSettings.js";
+import { useResendOtp } from "../../hooks/AuthHook/useResendOtp";
 import { AuthContext } from "../../context/AuthContext.jsx";
-
-
 
 import "./OTPVerify.css";
 import logo from "../../assets/Logo.png";
 import bgVideo from "../../assets/videos/bgVideo.mp4";
 
 const OTPVerify = () => {
-
-  const { authUser } = React.useContext(AuthContext);
-
-
   const { state } = useLocation();
   const navigate = useNavigate();
 
   const email = state?.email;
-  const purpose = state?.purpose; // <-- IMPORTANT
+  const purpose = state?.purpose;
+
+  const normalizedEmail = email?.toLowerCase().trim();
 
   const verifyOtpMutation = useVerifyOtp();
   const verifyEmailChange = useVerifyEmailChange();
+  const resendOtpMutation = useResendOtp();
 
   const { updateEmailInContext } = useContext(AuthContext);
 
@@ -45,6 +44,7 @@ const OTPVerify = () => {
     onSubmit: (values) => {
       const finalOtp = values.otp.join("");
 
+      // EMAIL CHANGE FLOW
       if (purpose === "changeEmail") {
         verifyEmailChange.mutate(finalOtp, {
           onSuccess: () => {
@@ -57,35 +57,37 @@ const OTPVerify = () => {
             }
 
             updateEmailInContext(stored.user.email);
-
             alert("Email updated successfully!");
 
             setTimeout(() => {
               navigate("/settings/account");
             }, 50);
-
-          }
+          },
         });
 
-        return; // stop here
+        return;
       }
 
-      // NORMAL OTP FLOWS
+      // NORMAL REGISTER / FORGOT FLOWS
       verifyOtpMutation.mutate(
-        { email, otp: finalOtp, purpose },
+        { email: normalizedEmail, otp: finalOtp, purpose },
         {
           onSuccess: () => {
             if (purpose === "register") {
-              navigate("/set-password", { state: { email, purpose } });
+              navigate("/set-password", {
+                state: { email: normalizedEmail, purpose: "register" },
+              });
             }
+
             if (purpose === "forgot") {
-              navigate("/reset-password", { state: { email, purpose } });
+              navigate("/reset-password", {
+                state: { email: normalizedEmail, purpose: "forgot" },
+              });
             }
-          }
+          },
         }
       );
-    }
-
+    },
   });
 
   const otp = formik.values.otp;
@@ -108,6 +110,12 @@ const OTPVerify = () => {
     }
   };
 
+  // Resend OTP
+  const handleResendOtp = () => {
+    resendOtpMutation.mutate({ email: normalizedEmail });
+    setTimer(60);
+  };
+
   // Timer
   useEffect(() => {
     if (timer === 0) return;
@@ -125,13 +133,19 @@ const OTPVerify = () => {
       </div>
 
       <div className="glass-container">
+
+        {/* BACK BUTTON */}
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+
         <div className="logo-area">
           <img src={logo} alt="Logo" className="logo" />
         </div>
 
         <h2 className="title">Verify OTP</h2>
         <p className="subtitle">
-          Enter the 6-digit OTP sent to <b>{email}</b>
+          Enter the 6-digit OTP sent to <b>{normalizedEmail}</b>
         </p>
 
         <form className="otp-form" onSubmit={formik.handleSubmit}>
@@ -150,7 +164,8 @@ const OTPVerify = () => {
             ))}
           </div>
 
-          {formik.errors.otp && (
+          {/* Correct validation display */}
+          {formik.touched.otp && formik.errors.otp && (
             <p className="error-text">OTP must be 6 digits</p>
           )}
 
@@ -170,24 +185,27 @@ const OTPVerify = () => {
                 <button
                   type="button"
                   className="resend-link"
-                  onClick={() => setTimer(60)}
+                  onClick={handleResendOtp}
+                  disabled={resendOtpMutation.isPending}
                 >
-                  Resend OTP
+                  {resendOtpMutation.isPending ? "Sending..." : "Resend OTP"}
                 </button>{" "}
                 (00:00)
               </p>
             )}
           </div>
+
           <button
             type="submit"
             className="btn-grad"
-            disabled={verifyOtpMutation.isPending || verifyEmailChange.isPending}
+            disabled={
+              verifyOtpMutation.isPending || verifyEmailChange.isPending
+            }
           >
             {verifyOtpMutation.isPending || verifyEmailChange.isPending
               ? "Verifying..."
               : "Verify"}
           </button>
-
         </form>
       </div>
     </div>

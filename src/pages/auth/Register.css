@@ -410,3 +410,67 @@ select.invalid {
   box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
   background: var(--input-bg) !important;
 }
+
+
+.suggestion-box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+
+  background: #000;
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  margin-top: 6px;
+  padding: 6px 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+
+  max-height: 160px;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+.suggestion-item {
+  padding: 10px 14px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.suggestion-item:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.suggestion-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestion-box::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.suggestion-box::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+}
+
+.suggestion-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.error-text {
+  color: #fa0000ff;
+  font-size: 0.78rem;
+  margin-top: 1px;        /* reduce space */
+  margin-bottom: -6px;    /* pull next input up */
+}
+.input-field {
+  position: relative !important;
+}
+
+.RegisterContainer {
+  overflow: visible !important;
+}

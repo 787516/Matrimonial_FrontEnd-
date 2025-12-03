@@ -4,6 +4,16 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import AvtarPhoto from "../../assets/Landing Page/profileAvtar.jpg";
 import { useUserProfile } from "../../hooks/ProfileHook/useUserDetailHook";
 import { useGetGallery, useUploadProfilePhoto } from "../../hooks/GalleryHook/useGalleryHook";
+import { useDashboardRequestList } from "../../hooks/Matches/useDashboardRequestList";
+import { useDashboardStats } from "../../hooks/Matches/useDashboardStats";
+
+import { useSendInterest } from "../../hooks/Matches/useMatches";
+import { useViewProfile } from "../../hooks/Matches/useMatches";
+import { useHandleRequestAction } from "../../hooks/Matches/useHandleRequestAction";
+import axiosInstance from "../../api/axiosInstance";
+
+
+import DashboardModal from "./DashboardModal.jsx";
 
 const Dashboard = () => {
   const { authUser } = React.useContext(AuthContext);
@@ -13,10 +23,71 @@ const Dashboard = () => {
   // ✔ ALWAYS CALL HOOKS AT TOP
   const { data: profile, isLoading } = useUserProfile(userProfileId);
 
+  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  //Action buttons
+  const handleRequestAction = useHandleRequestAction();
+  const sendInterest = useSendInterest();
+  const viewProfile = useViewProfile();
+
+  const onAccept = (requestId) => {
+    handleRequestAction.mutate({ requestId, action: "Accepted" });
+  };
+
+  const onReject = (requestId) => {
+    handleRequestAction.mutate({ requestId, action: "Rejected" });
+  };
+
+  const onViewProfile = (userId) => {
+    viewProfile.mutate(userId);
+  };
+
+  const onSendInterest = (userId) => {
+    sendInterest.mutate(userId);
+  };
+
+  const onChat = async (receiverId) => {
+    try {
+      await axiosInstance.post("/matches/chat-request", { receiverId });
+      alert("Chat Request Sent");
+    } catch (err) {
+      alert("Chat request failed");
+    }
+  };
+
+
   // ✔ States (must be before ANY return)
   const [showToast, setShowToast] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showMatches, setShowMatches] = useState(false);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalLoading, setModalLoading] = useState(false);
+  const [modalRows, setModalRows] = useState([]);
+
+  const [selectedParams, setSelectedParams] = useState({ type: "", status: "" });
+
+  const { data: requestData, isLoading: requestLoading } =
+    useDashboardRequestList(selectedParams.type, selectedParams.status, modalOpen);
+
+  const openModal = (stat) => {
+    setModalTitle(stat.title);
+    setSelectedParams({ type: stat.type, status: stat.status });
+
+    setModalLoading(true); // IMPORTANT
+    setModalOpen(true);
+  };
+
+  useEffect(() => {
+    if (!requestLoading && requestData) {
+      setModalRows(requestData.users);
+      setModalLoading(false); // IMPORTANT
+    }
+  }, [requestData, requestLoading]);
+
+
+
+
   const photoInputRef = useRef(null);
 
   const uploadProfilePhoto = useUploadProfilePhoto();
@@ -99,50 +170,58 @@ const Dashboard = () => {
     );
   }
 
+
   const statsData = [
     {
-      id: "accepted",
-      title: "Requests Accepted",
-      helper: "Profiles you accepted",
-      value: 12,
-      hasLink: true,
+      id: "receivedAccepted",
+      title: "Requests Received (Accepted)",
+      helper: "People who accepted your request",
+      value: stats?.received?.accepted || 0,
+      type: "received",
+      status: "Accepted",
     },
     {
-      id: "pending",
+      id: "receivedPending",
       title: "Requests Pending",
       helper: "Awaiting your response",
-      value: 3,
-      hasLink: false,
+      value: stats?.received?.pending || 0,
+      type: "received",
+      status: "Pending",
     },
     {
-      id: "declined",
+      id: "receivedRejected",
       title: "Requests Declined",
       helper: "Profiles you declined",
-      value: 1,
-      hasLink: false,
+      value: stats?.received?.rejected || 0,
+      type: "received",
+      status: "Rejected",
     },
     {
-      id: "received",
-      title: "Requests Received (Accepted)",
+      id: "sentAccepted",
+      title: "Requests Accepted By Others",
       helper: "They accepted your request",
-      value: 7,
-      hasLink: true,
+      value: stats?.sent?.acceptedByOthers || 0,
+      type: "sent",
+      status: "Accepted",
     },
     {
-      id: "chats",
-      title: "Chats Started",
-      helper: "Chats you initiated",
-      value: 4,
-      hasLink: false,
+      id: "sentPending",
+      title: "Requests You Sent (Pending)",
+      helper: "They haven't replied yet",
+      value: stats?.sent?.pending || 0,
+      type: "sent",
+      status: "Pending",
     },
     {
-      id: "interactions",
-      title: "Total Interactions",
-      helper: "Total of all requests & chats",
-      value: 27,
-      hasLink: false,
+      id: "sentRejected",
+      title: "Requests Declined By Others",
+      helper: "They rejected your request",
+      value: stats?.sent?.declinedByOthers || 0,
+      type: "sent",
+      status: "Rejected",
     },
   ];
+
 
   // Matches data (same as original script)
   const matchesData = [
@@ -184,52 +263,24 @@ const Dashboard = () => {
     },
   ];
 
-  // const [showMatches, setShowMatches] = useState(false);
+  const demoProfiles = [
+    { img: "https://i.pravatar.cc/120?img=1", reg: "SNB123", name: "Sayali", age: 26, city: "Pune", status: "Accepted" },
+    { img: "https://i.pravatar.cc/120?img=2", reg: "SNB456", name: "Priya", age: 29, city: "Mumbai", status: "Pending" },
+    { img: "https://i.pravatar.cc/120?img=3", reg: "SNB789", name: "Aarti", age: 24, city: "Nashik", status: "Declined" }
+  ];
 
-  // Progress bar smooth animation (like original)
-  // useEffect(() => {
-  //   let width = 0;
-  //   const interval = setInterval(() => {
-  //     width += 1;
-  //     if (width >= targetProgress) {
-  //       width = targetProgress;
-  //       clearInterval(interval);
-  //     }
-  //     setProgress(width);
-  //   }, 15);
-  //   return () => clearInterval(interval);
-  // }, []);
+  // const openModal = (title) => {
+  //   setModalTitle(title);
+  //   setModalLoading(true);
+  //   setModalOpen(true);
 
-  // Toast hide timer
-  // useEffect(() => {
-  //   if (!showToast) return;
-  //   const t = setTimeout(() => setShowToast(false), 2200);
-  //   return () => clearTimeout(t);
-  // }, [showToast]);
-
-  // const handleEditPhotoClick = () => {
-  //   if (photoInputRef.current) {
-  //     photoInputRef.current.click();
-  //   }
+  //   setTimeout(() => {
+  //     setModalRows(demoProfiles);
+  //     setModalLoading(false);
+  //   }, 1500);
   // };
 
-  // const handlePhotoChange = (e) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     const url = URL.createObjectURL(file);
-  //     setProfilePhoto(url);
-  //     setShowToast(true);
-  //   }
-  // };
 
-  // const handleExploreMatchesClick = (e) => {
-  //   e.preventDefault();
-  //   alert("Open Matches page (replace with your React route).");
-  // };
-
-  // const handleToggleMatches = () => {
-  //   setShowMatches((prev) => !prev);
-  // };
 
   return (
     <>
@@ -275,7 +326,7 @@ const Dashboard = () => {
                 </small>
 
                 <button
-                  className="btn  btn-outline-primary btn-sm btn-edit-photo"
+                  className="btnEdit  btn-outline-primary btn-sm btn-edit-photo"
                   type="button"
                   onClick={handleEditPhotoClick}
                 >
@@ -346,7 +397,9 @@ const Dashboard = () => {
               <div className="row g-3">
                 {statsData.map((stat) => (
                   <div className="col-md-4" key={stat.id}>
-                    <div className="stat-box p-3">
+                    {/* <div className="stat-box p-3"> */}
+                    <div className="stat-box p-3" onClick={() => openModal(stat)} style={{ cursor: "pointer" }}>
+
                       <div className="d-flex justify-content-between align-items-start">
                         <span className="stat-title">{stat.title}</span>
                         <h4 className="mb-0 stat-value">{stat.value}</h4>
@@ -356,7 +409,9 @@ const Dashboard = () => {
                         <a
                           href="#"
                           className="stat-link"
-                          onClick={handleExploreMatchesClick}
+                          // onClick={handleExploreMatchesClick}
+                          onClick={() => openModal(stat)}
+
                         >
                           Explore Matches
                         </a>
@@ -421,6 +476,27 @@ const Dashboard = () => {
           </section>
         </div>
       </main>
+      {/* <DashboardModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={modalTitle}
+        loading={modalLoading}
+        rows={modalRows}
+      /> */}
+      <DashboardModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={modalTitle}
+        loading={modalLoading}
+        rows={modalRows}
+        onAccept={onAccept}
+        onReject={onReject}
+        onViewProfile={onViewProfile}
+        onSendInterest={onSendInterest}
+        onChat={onChat}
+      />
+
+
     </>
   );
 };
