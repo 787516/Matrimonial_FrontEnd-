@@ -8,14 +8,14 @@ import { AuthContext } from "../../../context/AuthContext.jsx";
 const DeactivateProfile = () => {
   const [duration, setDuration] = useState("");
   const [unit, setUnit] = useState("days");
-  const [reason, setReason] = useState("");
+
 
   const deactivateMutation = useDeactivateProfile();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!duration || !unit || !reason.trim()) {
+    if (!duration || !unit) {
       alert("Please fill all fields!");
       return;
     }
@@ -23,7 +23,7 @@ const DeactivateProfile = () => {
     const payload = {
       duration: Number(duration),
       unit,
-      reason,
+      reason: "",
     };
 
     deactivateMutation.mutate(payload, {
@@ -56,50 +56,37 @@ const DeactivateProfile = () => {
             </p>
 
             <p>
-              <strong>Select deactivate duration:</strong>
+              This profile will be activated after the selected time period
+              deactivated for {duration ? `${duration} ${unit}` : "15 days"} and will be automatically activated again.
             </p>
 
             <form onSubmit={handleSubmit}>
-              {/* Duration Input */}
+              {/* Duration Dropdown */}
               <div className="deactivate-row">
-                <label>Duration</label>
-                <input
-                  type="number"
-                  min="1"
-                  className="deactivate-input"
-                  placeholder="Enter number"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                  required
-                />
-              </div>
-
-              {/* Unit Dropdown */}
-              <div className="deactivate-row">
-                <label>Unit</label>
                 <select
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value)}
                   className="deactivate-select"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (!val) {
+                      setDuration("");
+                      setUnit("days");
+                      return;
+                    }
+                    const [d, u] = val.split("-");
+                    setDuration(d);
+                    setUnit(u);
+                  }}
                   required
                 >
-                  <option value="days">Days</option>
-                  <option value="months">Months</option>
+                  <option value="">--Select Days--</option>
+                  <option value="15-days">15 Days</option>
+                  <option value="1-months">1 Month</option>
+                  <option value="2-months">2 Months</option>
+                  <option value="3-months">3 Months</option>
                 </select>
               </div>
 
-              {/* Reason */}
-              <div className="deactivate-row">
-                <label>Reason (optional)</label>
-                <textarea
-                  className="deactivate-textarea"
-                  rows={3}
-                  placeholder="Reason for deactivation..."
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  required
-                />
-              </div>
+
 
               {/* Submit Button */}
               <div className="deactivate-btn-wrapper">
@@ -110,7 +97,7 @@ const DeactivateProfile = () => {
                 >
                   {deactivateMutation.isPending
                     ? "Deactivating..."
-                    : "Deactivate Profile"}
+                    : "De-Activate"}
                 </button>
               </div>
             </form>
@@ -123,7 +110,7 @@ const DeactivateProfile = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

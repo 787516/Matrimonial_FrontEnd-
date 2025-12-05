@@ -1,6 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { FaChevronDown } from "react-icons/fa";
 import "./Preferences.css";
 import { useGetPreferences, useSavePreferences } from "../../hooks/PreferenceHook/usePreference";
+
+const CustomSelect = ({ label, options, value, onChange, placeholder = "Select" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSelect = (option) => {
+    onChange(option);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="custom-select-container" ref={dropdownRef}>
+      {label && <p className="select-label">{label}</p>}
+
+      <div
+        className={`select-trigger ${isOpen ? "open" : ""}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="selected-value">
+          {value || placeholder}
+        </span>
+        <FaChevronDown className={`select-icon ${isOpen ? "rotate" : ""}`} />
+      </div>
+
+      {isOpen && (
+        <div className="select-menu-custom">
+          <ul className="select-list">
+            {options.map((option, index) => (
+              <li
+                key={index}
+                className={`select-item ${value === option ? "selected" : ""}`}
+                onClick={() => handleSelect(option)}
+              >
+                {option}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 const Preferences = () => {
   const { data: pref, isLoading } = useGetPreferences();
@@ -127,68 +184,88 @@ const Preferences = () => {
         </h4>
 
         {/* AGE RANGE */}
-        <div className="mb-4">
-          <p className="fw-semibold">Age Range</p>
+        <div className="mb-4" style={{ fontFamily: "Inter, sans-serif" }}>
+          <p className="fw-semibold mb-3">Age Range</p>
 
-          <div className="d-flex align-items-center justify-content-between">
-            <div>{ageMin} yrs</div>
-
-            <div className="d-flex flex-column align-items-center">
+          <div className="d-flex align-items-center justify-content-between gap-4">
+            {/* FROM SLIDER */}
+            <div className="w-50">
+              <div className="d-flex justify-content-between mb-2">
+                <span className="fw-bold text-danger">From: {ageMin} yrs</span>
+              </div>
               <input
                 type="range"
                 min="18"
                 max="80"
                 value={ageMin}
-                onChange={(e) => setAgeMin(Number(e.target.value))}
-                className="form-range"
-                style={{ width: "300px" }}
-              />
-
-              <input
-                type="range"
-                min={ageMin}
-                max="80"
-                value={ageMax}
-                onChange={(e) => setAgeMax(Number(e.target.value))}
-                className="form-range"
-                style={{ width: "300px", marginTop: "5px" }}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val <= ageMax) setAgeMin(val);
+                }}
+                className="form-range modern-range"
               />
             </div>
 
-            <div>{ageMax} yrs</div>
+            {/* TO SLIDER */}
+            <div className="w-50">
+              <div className="d-flex justify-content-between mb-2">
+                <span className="fw-bold text-danger">To: {ageMax} yrs</span>
+              </div>
+              <input
+                type="range"
+                min="18"
+                max="80"
+                value={ageMax}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val >= ageMin) setAgeMax(val);
+                }}
+                className="form-range modern-range"
+              />
+            </div>
           </div>
         </div>
 
         {/* HEIGHT RANGE */}
-        <div className="mb-4">
-          <p className="fw-semibold">Height Range</p>
+        <div className="mb-4" style={{ fontFamily: "Inter, sans-serif" }}>
+          <p className="fw-semibold mb-3">Height Range</p>
 
-          <div className="d-flex align-items-center justify-content-between">
-            <div>{cmToFeet(heightMin)}</div>
-
-            <div className="d-flex flex-column align-items-center">
+          <div className="d-flex align-items-center justify-content-between gap-4">
+            {/* FROM SLIDER */}
+            <div className="w-50">
+              <div className="d-flex justify-content-between mb-2">
+                <span className="fw-bold text-danger">From: {cmToFeet(heightMin)}</span>
+              </div>
               <input
                 type="range"
                 min="100"
                 max="250"
                 value={heightMin}
-                onChange={(e) => setHeightMin(Number(e.target.value))}
-                className="form-range"
-                style={{ width: "300px" }}
-              />
-
-              <input
-                type="range"
-                min={heightMin}
-                max="250"
-                value={heightMax}
-                onChange={(e) => setHeightMax(Number(e.target.value))}
-                className="form-range"
-                style={{ width: "300px", marginTop: "5px" }}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val <= heightMax) setHeightMin(val);
+                }}
+                className="form-range modern-range"
               />
             </div>
 
-            <div>{cmToFeet(heightMax)}</div>
+            {/* TO SLIDER */}
+            <div className="w-50">
+              <div className="d-flex justify-content-between mb-2">
+                <span className="fw-bold text-danger">To: {cmToFeet(heightMax)}</span>
+              </div>
+              <input
+                type="range"
+                min="100"
+                max="250"
+                value={heightMax}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val >= heightMin) setHeightMax(val);
+                }}
+                className="form-range modern-range"
+              />
+            </div>
           </div>
         </div>
 
@@ -197,84 +274,48 @@ const Preferences = () => {
 
           <div className="col-md-6">
             <p>Marital Status</p>
-            <select
-              className="form-select custom-input"
+            <CustomSelect
+              options={["Never Married", "Divorced", "Widowed", "Separated", "Awaiting Divorce"]}
               value={maritalStatus}
-              onChange={(e) => setMaritalStatus(e.target.value)}
-            >
-              <option value="">Select</option>
-              <option>Never Married</option>
-              <option>Divorced</option>
-              <option>Widowed</option>
-              <option>Separated</option>
-              <option>Awaiting Divorce</option>
-            </select>
+              onChange={setMaritalStatus}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-6">
             <p>Religion</p>
-            <select
-              className="form-select custom-input"
+            <CustomSelect
+              options={["Hindu", "Muslim", "Christian", "Sikh", "Jain", "Buddhist", "Jewish", "Parsi", "No Religion", "Spiritual", "Other"]}
               value={religion}
-              onChange={(e) => setReligion(e.target.value)}
-            >
-              <option value="">Select</option>
-              <option>Hindu</option>
-              <option>Muslim</option>
-              <option>Christian</option>
-              <option>Sikh</option>
-              <option>Jain</option>
-              <option>Buddhist</option>
-              <option>Jewish</option>
-              <option>Parsi</option>
-              <option>No Religion</option>
-              <option>Spiritual</option>
-              <option>Other</option>
-            </select>
+              onChange={setReligion}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-6">
             <p>Caste</p>
-            <select
-              className="form-select custom-input"
+            <CustomSelect
+              options={["Maratha", "Brahmin", "Rajput", "Lingayat", "Yadav", "Punjabi Khatri", "No Bar", "Don't Care"]}
               value={caste}
-              onChange={(e) => setCaste(e.target.value)}
-            >
-              <option value="">Select</option>
-              <option>Maratha</option>
-              <option>Brahmin</option>
-              <option>Rajput</option>
-              <option>Lingayat</option>
-              <option>Yadav</option>
-              <option>Punjabi Khatri</option>
-              <option>No Bar</option>
-              <option>Don't Care</option>
-            </select>
+              onChange={setCaste}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-6">
             <p>Mother Tongue</p>
-            <select
-              className="form-select custom-input"
+            <CustomSelect
+              options={["Hindi", "Marathi", "Gujarati", "Kannada", "Tamil", "Punjabi", "English", "Other"]}
               value={motherTongue}
-              onChange={(e) => setMotherTongue(e.target.value)}
-            >
-              <option value="">Select</option>
-              <option>Hindi</option>
-              <option>Marathi</option>
-              <option>Gujarati</option>
-              <option>Kannada</option>
-              <option>Tamil</option>
-              <option>Punjabi</option>
-              <option>English</option>
-              <option>Other</option>
-            </select>
+              onChange={setMotherTongue}
+              placeholder="Select"
+            />
           </div>
         </div>
-      </div>
+        <hr className="my-4" />
 
-      {/* CARD 2 — LOCATION, CAREER, LIFESTYLE, HOROSCOPE */}
-      <div className="preference-card mx-auto mt-4 p-4 p-md-5 rounded-4 shadow-sm">
+        {/* LOCATION, CAREER, LIFESTYLE, HOROSCOPE */}
+
 
         {/* LOCATION */}
         <h5 className="fw-bold mb-4">Location Details</h5>
@@ -282,16 +323,12 @@ const Preferences = () => {
 
           <div className="col-md-4">
             <p>Country</p>
-            <select className="form-select custom-input" value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option value="">Select</option>
-              <option>India</option>
-              <option>USA</option>
-              <option>Canada</option>
-              <option>UK</option>
-              <option>Australia</option>
-              <option>Germany</option>
-              <option>Other</option>
-            </select>
+            <CustomSelect
+              options={["India", "USA", "Canada", "UK", "Australia", "Germany", "Other"]}
+              value={country}
+              onChange={setCountry}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
@@ -314,46 +351,32 @@ const Preferences = () => {
 
           <div className="col-md-6">
             <p>Qualification</p>
-            <select className="form-select custom-input" value={education} onChange={(e) => setEducation(e.target.value)}>
-              <option>Select</option>
-              <option>High School</option>
-              <option>Diploma</option>
-              <option>Bachelor's Degree</option>
-              <option>Master's Degree</option>
-              <option>PhD</option>
-              <option>MBA</option>
-              <option>Medical - MBBS</option>
-              <option>Engineering - BE/B.Tech</option>
-              <option>Law - LLB</option>
-            </select>
+            <CustomSelect
+              options={["High School", "Diploma", "Bachelor's Degree", "Master's Degree", "PhD", "MBA", "Medical - MBBS", "Engineering - BE/B.Tech", "Law - LLB"]}
+              value={education}
+              onChange={setEducation}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-6">
             <p>Profession</p>
-            <select className="form-select custom-input" value={occupation} onChange={(e) => setOccupation(e.target.value)}>
-              <option>Select</option>
-              <option>Software Professional</option>
-              <option>Engineer</option>
-              <option>Doctor</option>
-              <option>Business Owner</option>
-              <option>Teacher</option>
-              <option>Student</option>
-              <option>Other</option>
-            </select>
+            <CustomSelect
+              options={["Software Professional", "Engineer", "Doctor", "Business Owner", "Teacher", "Student", "Other"]}
+              value={occupation}
+              onChange={setOccupation}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-6">
             <p>Annual Income</p>
-            <select className="form-select custom-input" value={salaryRange} onChange={(e) => setSalaryRange(e.target.value)}>
-              <option>Select</option>
-              <option>Below 1 LPA</option>
-              <option>1-2 LPA</option>
-              <option>3-5 LPA</option>
-              <option>5-7 LPA</option>
-              <option>7-10 LPA</option>
-              <option>10-15 LPA</option>
-              <option>15 LPA & Above</option>
-            </select>
+            <CustomSelect
+              options={["Below 1 LPA", "1-2 LPA", "3-5 LPA", "5-7 LPA", "7-10 LPA", "10-15 LPA", "15 LPA & Above"]}
+              value={salaryRange}
+              onChange={setSalaryRange}
+              placeholder="Select"
+            />
           </div>
         </div>
 
@@ -365,98 +388,102 @@ const Preferences = () => {
         <div className="row g-4">
           <div className="col-md-4">
             <p>Diet</p>
-            <select className="form-select custom-input" value={diet} onChange={(e) => setDiet(e.target.value)}>
-              <option>Select</option>
-              <option>Vegetarian</option>
-              <option>Eggetarian</option>
-              <option>Non-Vegetarian</option>
-              <option>Jain</option>
-              <option>Vegan</option>
-            </select>
+            <CustomSelect
+              options={["Vegetarian", "Eggetarian", "Non-Vegetarian", "Jain", "Vegan"]}
+              value={diet}
+              onChange={setDiet}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
             <p>Smoking</p>
-            <select className="form-select custom-input" value={smoking} onChange={(e) => setSmoking(e.target.value)}>
-              <option>Select</option>
-              <option>Never</option>
-              <option>Occasionally</option>
-              <option>Regularly</option>
-            </select>
+            <CustomSelect
+              options={["Never", "Occasionally", "Regularly"]}
+              value={smoking}
+              onChange={setSmoking}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
             <p>Drinking</p>
-            <select className="form-select custom-input" value={drinking} onChange={(e) => setDrinking(e.target.value)}>
-              <option>Select</option>
-              <option>Never</option>
-              <option>Occasionally</option>
-              <option>Regularly</option>
-            </select>
+            <CustomSelect
+              options={["Never", "Occasionally", "Regularly"]}
+              value={drinking}
+              onChange={setDrinking}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
             <p>Manglik</p>
-            <select className="form-select custom-input" value={manglik} onChange={(e) => setManglik(e.target.value)}>
-              <option>Select</option>
-              <option>Yes</option>
-              <option>No</option>
-              <option>Doesn't Matter</option>
-            </select>
+            <CustomSelect
+              options={["Yes", "No", "Doesn't Matter"]}
+              value={manglik}
+              onChange={setManglik}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
             <p>Rashi</p>
-            <select className="form-select custom-input" value={rashi} onChange={(e) => setRashi(e.target.value)}>
-              <option>Select</option>
-              <option>Mithun</option>
-              <option>Tula</option>
-              <option>Vrishabh</option>
-            </select>
+            <CustomSelect
+              options={["Mithun", "Tula", "Vrishabh"]}
+              value={rashi}
+              onChange={setRashi}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
             <p>Nadi</p>
-            <select className="form-select custom-input" value={nadi} onChange={(e) => setNadi(e.target.value)}>
-              <option>Select</option>
-              <option>Adi</option>
-              <option>Madhya</option>
-              <option>Antya</option>
-              <option>Doesn't Matter</option>
-            </select>
+            <CustomSelect
+              options={["Adi", "Madhya", "Antya", "Doesn't Matter"]}
+              value={nadi}
+              onChange={setNadi}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
             <p>Gan</p>
-            <select className="form-select custom-input" value={gan} onChange={(e) => setGan(e.target.value)}>
-              <option>Select</option>
-              <option>Dev</option>
-              <option>Manav</option>
-              <option>Rakshas</option>
-            </select>
+            <CustomSelect
+              options={["Dev", "Manav", "Rakshas"]}
+              value={gan}
+              onChange={setGan}
+              placeholder="Select"
+            />
           </div>
 
           <div className="col-md-4">
             <p>Charan</p>
-            <select className="form-select custom-input" value={charan} onChange={(e) => setCharan(e.target.value)}>
-              <option>Select</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-            </select>
+            <CustomSelect
+              options={["1", "2", "3", "4"]}
+              value={charan}
+              onChange={setCharan}
+              placeholder="Select"
+            />
           </div>
         </div>
 
         {/* EXPECTATION */}
         <div className="mt-4">
-          <p>Partner Expectations</p>
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <p className="mb-0">Partner Expectations</p>
+            <span className={`small fw-bold ${partnerExpectation.length >= 500 ? "text-danger" : "text-muted"}`}>
+              {partnerExpectation.length} / 500
+            </span>
+          </div>
           <textarea
-            className="form-control"
-            rows="3"
+            className="form-control expectation-textarea"
+            rows="5"
             maxLength="500"
             value={partnerExpectation}
             onChange={(e) => setPartnerExpectation(e.target.value)}
+            style={{
+              borderColor: partnerExpectation.length >= 500 ? "#dc3545" : ""
+            }}
           />
         </div>
 
@@ -472,7 +499,7 @@ const Preferences = () => {
         </div>
 
       </div>
-    </main>
+    </main >
   );
 };
 

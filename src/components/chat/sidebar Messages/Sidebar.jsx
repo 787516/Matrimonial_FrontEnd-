@@ -1,9 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import SearchInput from "./SearchInput";
 import Conversations from "./Conversations";
 import LogoutButton from "./LogoutButton";
+import ChatRequestList from "./ChatRequestList.jsx";
 
 const Sidebar = () => {
+
+  const [activeTab, setActiveTab] = useState("primary");
+
   return (
     <>
       <style>{`
@@ -21,18 +26,18 @@ const Sidebar = () => {
 
         /* TOP TITLE / TABS SECTION */
         .sb-header {
-          padding: 18px 18px 10px;
+       
           border-bottom: 1px solid #e5e7eb;
           background: #ffffff;
           flex-shrink: 0;
         }
 
         .sb-title {
-          font-size: 1.25rem;
-          font-weight: 700;
+          font-size: 1.1rem;
+          font-weight: 500;
           color: #111827;
           text-align: center;
-          margin-bottom: 2px;
+          margin-bottom: 6px;
         }
 
         .sb-subtitle {
@@ -156,11 +161,14 @@ const Sidebar = () => {
           }
 
           .sb-header {
-            padding: 14px 14px 8px;
+        
+            padding-top:2px;
+            padding-bottom:4px;
           }
 
           .sb-title {
             font-size: 1.1rem;
+            
           }
 
           .sb-subtitle {
@@ -204,22 +212,65 @@ const Sidebar = () => {
             text-align: center;
           }
         }
+          /* Tabs Wrapper */
+.sb-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Default Tab */
+.sb-tab-pill {
+
+  border-radius: 30px;
+  border: 1.8px solid #ddd;
+  background: #fff;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.sb-tab-pill:hover {
+  border-color: #D31027;
+  color: #D31027;
+}
+
+/* 🔥 Active Tab */
+.sb-tab-pill.active {
+  background: linear-gradient(135deg, #D31027, #ff3366);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(211, 16, 39, 0.35);
+  transform: translateY(-1px);
+}
+
       `}</style>
 
       <div className="sb-wrapper">
         {/* Messages / Conversations / Pills */}
         <div className="sb-header">
           <div className="sb-title">Messages</div>
-          <div className="sb-subtitle">Conversations</div>
+         
 
           <div className="sb-tabs">
-            <button type="button" className="sb-tab-pill active">
+            <button
+              className={`sb-tab-pill ${activeTab === "primary" ? "active" : ""}`}
+              onClick={() => setActiveTab("primary")}
+            >
               Primary
             </button>
-            <button type="button" className="sb-tab-pill">
+
+            <button
+              className={`sb-tab-pill ${activeTab === "requests" ? "active" : ""}`}
+              onClick={() => setActiveTab("requests")}
+            >
               Requests
             </button>
           </div>
+
 
           <div className="sb-header-divider" />
         </div>
@@ -231,8 +282,10 @@ const Sidebar = () => {
 
         {/* Conversation list */}
         <div className="sb-list">
-          <Conversations />
+          {activeTab === "primary" && <Conversations />}
+          {activeTab === "requests" && <ChatRequestList />}
         </div>
+
 
         {/* Logout button */}
         <div className="sb-footer">

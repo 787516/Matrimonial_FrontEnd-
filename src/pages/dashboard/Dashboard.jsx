@@ -11,9 +11,12 @@ import { useSendInterest } from "../../hooks/Matches/useMatches";
 import { useViewProfile } from "../../hooks/Matches/useMatches";
 import { useHandleRequestAction } from "../../hooks/Matches/useHandleRequestAction";
 import axiosInstance from "../../api/axiosInstance";
-
-
+import { FaEye, FaCheck, FaTimes, FaHeart, FaComment } from "react-icons/fa";
+import { MdBlock } from "react-icons/md";
 import DashboardModal from "./DashboardModal.jsx";
+import { useCreateChatRoom } from "../../hooks/ChatHook/useCreateChatRoom";
+import { useNavigate } from "react-router-dom";
+
 
 const Dashboard = () => {
   const { authUser } = React.useContext(AuthContext);
@@ -22,7 +25,6 @@ const Dashboard = () => {
 
   // ✔ ALWAYS CALL HOOKS AT TOP
   const { data: profile, isLoading } = useUserProfile(userProfileId);
-
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   //Action buttons
   const handleRequestAction = useHandleRequestAction();
@@ -36,6 +38,12 @@ const Dashboard = () => {
   const onReject = (requestId) => {
     handleRequestAction.mutate({ requestId, action: "Rejected" });
   };
+
+  const onBlock = (receiverId) => {
+    handleRequestAction.mutate({ requestId, action: "Blocked" });
+  }
+
+  
 
   const onViewProfile = (userId) => {
     viewProfile.mutate(userId);
@@ -54,11 +62,43 @@ const Dashboard = () => {
     }
   };
 
+// to create chat room
+const createChatRoom = useCreateChatRoom();
+const navigate = useNavigate();
+
+const handleStartChat = (receiverId) => {
+  createChatRoom.mutate(receiverId, {
+    onSuccess: (res) => {
+      const roomId = res.data._id;
+      alert("chat room created");
+      navigate(`/chat`);
+    },
+    onError: () => {
+      alert("Failed to create chat room");
+    }
+  });
+};
+
+const handleBlockUser = (requestId) => {
+  if (!window.confirm("Are you sure you want to block this user?")) return;
+
+  handleRequestAction.mutate(
+    { requestId, action: "Blocked" },
+    {
+      onSuccess: () => {
+        alert("User blocked successfully!");
+      },
+      onError: () => {
+        alert("Failed to block user.");
+      }
+    }
+  );
+};
 
   // ✔ States (must be before ANY return)
   const [showToast, setShowToast] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [showMatches, setShowMatches] = useState(false);
+  const [showMatches, setShowMatches] = useState(true);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -85,6 +125,16 @@ const Dashboard = () => {
     }
   }, [requestData, requestLoading]);
 
+
+  // Fetch both accepted lists
+  const { data: acceptedByOthers } = useDashboardRequestList("sent", "Accepted", showMatches);
+  const { data: receivedAccepted } = useDashboardRequestList("received", "Accepted", showMatches);
+
+  // Merge both → final list for "Your Matches"
+  const acceptedMatches = [
+    ...(acceptedByOthers?.users || []),
+    ...(receivedAccepted?.users || [])
+  ];
 
 
 
@@ -224,6 +274,7 @@ const Dashboard = () => {
 
 
   // Matches data (same as original script)
+  /* ---------- MATCHES DATA + VIEW TOGGLE --------- */
   const matchesData = [
     {
       name: "Sayali S",
@@ -232,7 +283,7 @@ const Dashboard = () => {
       language: "Marathi",
       location: "Navi Mumbai",
       occupation: "Not Working",
-      img: "https://i.pravatar.cc/120?img=5",
+      img: "https://i.pravatar.cc/120?img=5"
     },
     {
       name: "Priya K",
@@ -241,7 +292,7 @@ const Dashboard = () => {
       language: "Hindi",
       location: "Pune",
       occupation: "Software Engineer",
-      img: "https://i.pravatar.cc/120?img=6",
+      img: "https://i.pravatar.cc/120?img=6"
     },
     {
       name: "Anjali R",
@@ -250,7 +301,7 @@ const Dashboard = () => {
       language: "Gujarati",
       location: "Ahmedabad",
       occupation: "Teacher",
-      img: "https://i.pravatar.cc/120?img=7",
+      img: "https://i.pravatar.cc/120?img=7"
     },
     {
       name: "Kavya L",
@@ -259,8 +310,8 @@ const Dashboard = () => {
       language: "Telugu",
       location: "Hyderabad",
       occupation: "Student",
-      img: "https://i.pravatar.cc/120?img=8",
-    },
+      img: "https://i.pravatar.cc/120?img=8"
+    }
   ];
 
   const demoProfiles = [
@@ -411,7 +462,6 @@ const Dashboard = () => {
                           className="stat-link"
                           // onClick={handleExploreMatchesClick}
                           onClick={() => openModal(stat)}
-
                         >
                           Explore Matches
                         </a>
@@ -432,7 +482,7 @@ const Dashboard = () => {
               </h5>
               <button
                 type="button"
-                className="btn btn-outline-secondary btn-sm btn-view-all"
+                className="btn btn-view-all"
                 onClick={handleToggleMatches}
               >
                 {showMatches ? "Hide" : "View All"}
@@ -441,31 +491,75 @@ const Dashboard = () => {
 
             {/* Matches Grid */}
             {showMatches && (
-              <div className="row g-3" id="matchesGrid">
-                {matchesData.map((match, idx) => (
-                  <div className="col-12 col-md-6 col-lg-3" key={idx}>
+              <div className="row g-3" id="matchesGrid" style={{ display: 'flex', flexDirection: 'row', gap: '20px', overflowX: 'auto', paddingBottom: '10px', scrollBehavior: 'smooth' }}>
+                {acceptedMatches.map((match, idx) => (
+
+                  <div className="col-12 col-md-6 col-lg-3" key={idx} style={{ minWidth: '260px', maxWidth: '260px' }}>
                     <div className="card match-card p-3 text-center h-100">
                       <img
-                        src={match.img}
-                        alt={match.name}
+                        src={match.profilePhoto || AvtarPhoto}
+                        alt={match.firstName}
                         className="rounded-circle mb-3"
                         width="90"
                         height="90"
+                        style={{ objectFit: 'cover' }}
                       />
-                      <h6 className="mb-1">{match.name}</h6>
-                      <small className="text-muted d-block">
-                        {match.age}yrs, {match.height}, {match.language},{" "}
-                        {match.location}
-                      </small>
-                      <small className="text-muted d-block">
-                        {match.occupation}
-                      </small>
+                      <h6 className="mb-1 fw-bold">
+                        {match.firstName} {match.lastName}
+                      </h6>
+
+                      <div className="match-info text-muted" style={{ fontSize: '0.85rem' }}>
+                        <div><strong>Reg. ID:</strong> {match.registrationId}</div>
+                        <div><strong>Gender:</strong> {match.gender}</div>
+                        <div><strong>Status:</strong> {match.status}</div>
+                        <div><strong>maritalStatus:</strong> {match.maritalStatus || "—"}</div>
+                        <div><strong>Language:</strong> {match.motherTongue || "—"}</div>
+                        <div><strong>Location:</strong> {match.city || "—"}, {match.state || ""}</div>
+                        <div><strong>Gender:</strong> {match.gender}</div>
+                      </div>
+
+                      {/* Updated buttons section */}
                       <div className="mt-3 d-flex justify-content-center gap-2">
-                        <button className="btn btn-outline-primary btn-sm">
-                          View
+                        <button className="btn btn-chat" 
+                        onClick={() => handleStartChat(match._id)}
+                        style={{
+                          background: 'linear-gradient(to right, #D31027 0%, #EA384D 51%, #D31027 100%)',
+                          backgroundSize: '200% auto',
+                          color: '#fff',
+                          borderRadius: '30px',
+                          padding: '7px 25px',
+                          fontSize: '0.85rem',
+                          fontWeight: '500',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px',
+                          border: 'none',
+                          transition: '0.5s',
+                          boxShadow: '0 0 20px #eee'
+                        }}>
+                          <FaComment /> Chat
                         </button>
-                        <button className="btn btn-danger btn-sm">
-                          Shortlist
+
+                        <button className="btn btn-block" 
+                        onClick={() => handleBlockUser(match.requestId)}
+                        style={{
+                          background: 'linear-gradient(to right, #D31027 0%, #EA384D 51%, #D31027 100%)',
+                          backgroundSize: '200% auto',
+                          color: '#fff',
+                          borderRadius: '30px',
+                          padding: '7px 25px',
+                          fontSize: '0.85rem',
+                          fontWeight: '500',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px',
+                          border: 'none',
+                          transition: '0.5s',
+                          boxShadow: '0 0 20px #eee'
+                        }}>
+                          <MdBlock /> Block
                         </button>
                       </div>
                     </div>

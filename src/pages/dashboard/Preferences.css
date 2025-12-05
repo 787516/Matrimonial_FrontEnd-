@@ -1,58 +1,290 @@
 /* LAYOUT --------------------------------------------------- */
-    main.preference {
-            max-width: 1500px;
-           
-            color: #000;
-            background:#F0F8FF;
-        }
+main.preference {
+    max-width: 1500px;
+    color: #000;
+    background: #ffffff;
+}
 
-    #ageBox,
-    #heightBox {
-        font-size: 0.9rem;
-        background: #f1f1f1;
-        border: 1px solid #ddd;
-        border-radius: 8px;
+#ageBox,
+#heightBox {
+    font-size: 0.9rem;
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+/* Card Styling */
+.preference-card {
+    background: #fff;
+    max-width: 950px;
+    border-radius: 14px;
+    padding: 32px;
+}
+
+/* p tags = 1rem */
+p {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* Dropdown + Input styling */
+.form-select,
+.form-control {
+    height: 48px;
+    padding: 0 16px;
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 14px;
+    padding-right: 40px;
+}
+
+/* Custom Scrollbar for Dropdown */
+.form-select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.form-select::-webkit-scrollbar-thumb {
+    background: #d31027;
+    border-radius: 4px;
+}
+
+.form-select::-webkit-scrollbar-thumb:hover {
+    background: #b00d20;
+}
+
+.form-select:hover,
+.form-control:hover {
+    border-color: #d31027;
+    box-shadow: 0 4px 15px rgba(211, 16, 39, 0.1);
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: #d31027;
+    box-shadow: 0 0 0 4px rgba(211, 16, 39, 0.15);
+}
+
+.form-select::placeholder,
+.form-control::placeholder {
+    color: #bbb !important;
+}
+
+/* Force white background for options */
+.form-select option {
+    background-color: #ffffff;
+    color: #333;
+    padding: 10px;
+}
+
+/* Income Chips */
+.tag {
+    padding: 6px 14px;
+    background: #f1f1f1;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background: #d31027;
+    color: #fff;
+    transition: 0.25s;
+}
+
+/* Modern Range Slider */
+.modern-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.modern-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #d31027;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    margin-top: -7px;
+}
+
+.modern-range::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #e0e0e0;
+    border-radius: 5px;
+}
+
+.modern-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 6px rgba(211, 16, 39, 0.1);
+}
+
+.modern-range:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 6px rgba(211, 16, 39, 0.2);
+}
+
+/* Expectation Textarea */
+.expectation-textarea {
+    resize: none;
+    height: 150px !important;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.expectation-textarea:focus {
+    border-color: #d31027;
+    box-shadow: 0 0 0 4px rgba(211, 16, 39, 0.15);
+}
+
+/* Custom Select Styles moved from CustomSelect.css */
+.custom-select-container {
+    position: relative;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+
+.select-label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #000;
+}
+
+.select-trigger {
+    height: 48px;
+    padding: 0 16px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.select-trigger:hover {
+    border-color: #d31027;
+    box-shadow: 0 4px 15px rgba(211, 16, 39, 0.1);
+}
+
+.select-trigger.open {
+    border-color: #d31027;
+    box-shadow: 0 0 0 4px rgba(211, 16, 39, 0.15);
+}
+
+.selected-value {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.select-icon {
+    color: #333;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.select-icon.rotate {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.select-menu-custom {
+    position: absolute;
+    top: 110%;
+    /* slightly below trigger */
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid #f0f0f0;
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
     }
 
-    /* Card Styling */
-    .preference-card {
-        background: #fff;
-        max-width: 950px;
-        border-radius: 14px;
-        padding: 32px;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    /* p tags = 1rem */
-    p {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 4px;
-    }
+.select-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 250px;
+    /* Limit height for scrollbar */
+    overflow-y: auto;
+}
 
-    /* Dropdown + Input styling */
-    .form-select,
-    .form-control {
-        height: 45px;
-        font-size: 0.95rem;
-        color: #333;
-    }
+.select-item {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-bottom: 1px solid #f9f9f9;
+}
 
-    .form-select::placeholder,
-    .form-control::placeholder {
-        color: #bbbbbb !important;
-    }
+.select-item:last-child {
+    border-bottom: none;
+}
 
-    /* Income Chips */
-    .tag {
-        padding: 6px 14px;
-        background: #f1f1f1;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        cursor: pointer;
-    }
+.select-item:hover {
+    background-color: #fff4f5;
+    /* Light red tint */
+    color: #d31027;
+}
 
-    .tag:hover {
-        background: #d31027;
-        color: #fff;
-        transition: 0.25s;
-    }
+.select-item.selected {
+    background-color: #fff4f5;
+    color: #d31027;
+    font-weight: 600;
+}
+
+.select-list::-webkit-scrollbar-thumb:hover {
+    background: #b00d20;
+}

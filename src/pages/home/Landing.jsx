@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Landing.css";
 
 // Background images
@@ -26,14 +27,8 @@ import {
   FaPeopleRoof,
   FaHeart,
   FaHeadset,
-  FaPhone,
-  FaEnvelope,
-  FaFacebookF,
-  FaInstagram,
 } from "react-icons/fa6";
-import { FaMapMarkerAlt, FaSlidersH  } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaBell } from "react-icons/fa";
+import { FaSlidersH } from "react-icons/fa";
 
 const couples = [
   {
@@ -100,10 +95,13 @@ const couples = [
 ];
 
 const Landing = () => {
-  // Search filters
-  const [lookingFor, setLookingFor] = useState("");
+  const navigate = useNavigate();
+
+  // Search filters (controlled)
+  const [lookingFor, setLookingFor] = useState(""); // "Bride" | "Groom"
   const [fromAge, setFromAge] = useState("");
   const [toAge, setToAge] = useState("");
+  const [religion, setReligion] = useState("Hindu");
   const [ageOptions, setAgeOptions] = useState([]);
 
   // ---- AGE LOGIC (same as your JS) ----
@@ -127,10 +125,21 @@ const Landing = () => {
     }
   }, [lookingFor]);
 
-  const handleSearchPartner = () => {
-    // Wire this to your search page / API later
-    console.log({ lookingFor, fromAge, toAge });
-    alert("Search Partner clicked (connect this to your search logic).");
+  // Replaces alert: navigate to /search with query params
+  const handleSearchPartner = (e) => {
+    // If called from a form submit, prevent default
+    if (e && e.preventDefault) e.preventDefault();
+
+    // Build query params. Only include values that are set.
+    const params = new URLSearchParams();
+
+    if (lookingFor) params.set("gender", lookingFor === "Groom" ? "male" : "female");
+    if (fromAge) params.set("minAge", fromAge);
+    if (toAge) params.set("maxAge", toAge);
+    if (religion) params.set("religion", religion);
+
+    // Navigate to search page with parameters
+    navigate(`/search?${params.toString()}`);
   };
 
   return (
@@ -151,18 +160,22 @@ const Landing = () => {
           <h1 className="hero-main-title shimmer-text">
             Every story here begins with Sneha and ends with Bandhan.
           </h1>
+          
           <p className="hero-subtitle">
             Find a partner who understands your values, respects your family and
             walks with you for life.
           </p>
 
           {/* SEARCH BOX */}
-          <div className="hero-search-box p-4">
+
+          {/* Converted to a proper form so Enter works; button triggers navigation */}
+          <form className="hero-search-box p-4" onSubmit={handleSearchPartner}>
             <div className="row g-3 align-items-center">
               {/* Looking for */}
               <div className="col-md-3 col-6">
                 <select
                   id="lookingFor"
+                  name="lookingFor"
                   className="form-select hero-select small-text"
                   value={lookingFor}
                   onChange={(e) => setLookingFor(e.target.value)}
@@ -179,6 +192,7 @@ const Landing = () => {
               <div className="col-md-2 col-6">
                 <select
                   id="fromAge"
+                  name="fromAge"
                   className="form-select hero-select small-text"
                   value={fromAge}
                   onChange={(e) => setFromAge(e.target.value)}
@@ -193,12 +207,14 @@ const Landing = () => {
                     </option>
                   ))}
                 </select>
+                
               </div>
 
               {/* To Age */}
               <div className="col-md-2 col-6">
                 <select
                   id="toAge"
+                  name="toAge"
                   className="form-select hero-select small-text"
                   value={toAge}
                   onChange={(e) => setToAge(e.target.value)}
@@ -217,26 +233,28 @@ const Landing = () => {
 
               {/* Religion */}
               <div className="col-md-2 col-6">
-                <select className="form-select hero-select small-text">
-                  <option value="" disabled hidden>
-                    Religion
-                  </option>
+                <select
+                  name="religion"
+                  className="form-select hero-select small-text"
+                  value={religion}
+                  onChange={(e) => setReligion(e.target.value)}
+                >
                   <option value="Hindu">Hindu</option>
+                  <option value="Muslim">Muslim</option>
+                  <option value="Christian">Christian</option>
+                  <option value="Sikh">Sikh</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
 
               {/* Search Button */}
               <div className="col-md-3 d-flex justify-content-center">
-                <button
-                  className="btn-search"
-                  type="button"
-                  onClick={handleSearchPartner}
-                >
+                <button className="btn-search" type="submit">
                   Search Partner
                 </button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </section>
 
@@ -283,7 +301,7 @@ const Landing = () => {
         </div>
 
         <div className="features">
-           {/* Card 1 */}
+          {/* Card 1 */}
           <div className="feature-card">
             <div className="icon icon-trust">
               <FaShieldHeart />
@@ -368,7 +386,6 @@ const Landing = () => {
               </p>
             </div>
           </div>
-         
         </div>
       </section>
 
@@ -401,7 +418,10 @@ const Landing = () => {
       <section
         className="hero-compact mb-5"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.60)), url(${heroSecBg})`,
+          backgroundImage:
+            "linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.60)), url(" +
+            heroSecBg +
+            ")",
           backgroundPosition: "50% 15%",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",

@@ -17,7 +17,7 @@ import ForgotPassword from '../pages/auth/ForgotPassword.jsx';
 import Dashboard from '../pages/dashboard/Dashboard';
 import Preferences from '../pages/dashboard/Preferences.jsx';
 import GalleryUpload from '../pages/dashboard/GalleryUpload.jsx';
-import Matches from '../pages/Maches/Matches.jsx';
+
 //import MyProfile from '../pages/dashboard/MyProfile';
 import ProfileAppearance from '../pages/dashboard/MyProfile/ProfileAppearance.jsx';
 import ProfileAboutMe from '../pages/dashboard/MyProfile/ProfileAboutMe.jsx';
@@ -27,7 +27,7 @@ import ProfileReligiousBackground from "../pages/dashboard/MyProfile/ProfileReli
 import ProfileEducationBackground from "../pages/dashboard/MyProfile/ProfileEducationBackground.jsx"
 import ProfileLocation from "../pages/dashboard/MyProfile/ProfileLocation.jsx"
 import ProfileLifeStyle from "../pages/dashboard/MyProfile/ProfileLifeStyle.jsx"
-import EditProfile from '../pages/dashboard/EditProfile';
+//import EditProfile from '../pages/dashboard/EditProfile';
 //settings page
 import AccountSettings from "../pages/dashboard/Settings/AccountSettings.jsx";
 import DeactivateProfile from "../pages/dashboard/Settings/DeactivateProfile.jsx"
@@ -35,6 +35,9 @@ import DeleteProfile from "../pages/dashboard/Settings/DeleteProfile.jsx";
 // Search Pages
 import Search from '../pages/search/Search';
 
+//matches pages
+import Matches from '../pages/Maches/Matches.jsx';
+import ViewProfile from "../pages/Maches/ViewProfile.jsx";
 // Chat Pages
 import Chat from '../pages/chat/Chat';
 import Conversation from '../pages/chat/Conversation';
@@ -159,6 +162,16 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+        <Route
+        path="/user/details/:userId"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <ViewProfile />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
       // My Profile Routes
       <Route
         path="/profile/appearance"
@@ -267,11 +280,11 @@ const AppRoutes = () => {
       <Route
         path="/search"
         element={
-          <ProtectedRoute>
+          
             <DashboardLayout>
               <Search />
             </DashboardLayout>
-          </ProtectedRoute>
+          
         }
       />
 
@@ -300,17 +313,17 @@ const AppRoutes = () => {
 
       {/* Plans Routes */}
       <Route
-        path="/plans"
+        path="/membership"
         element={
-          <ProtectedRoute>
+          
             <DashboardLayout>
               <Plans />
             </DashboardLayout>
-          </ProtectedRoute>
+          
         }
       />
       <Route
-        path="/payment/success"
+        path="/payment-result"
         element={
           <ProtectedRoute>
             <DashboardLayout>

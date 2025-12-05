@@ -16,7 +16,6 @@ export const getMessages = (conversationId, page = 1) => {
   return axiosInstance.get(`/chat/conversations/${conversationId}/messages`, { params: { page } });
 };
 
-
 export const startConversation = (userId) => {
   return axiosInstance.post('/chat/conversations', { userId });
 };

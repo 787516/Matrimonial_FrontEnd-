@@ -67,25 +67,9 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navMenu">
           <ul className="navbar-nav mx-auto align-items-center gap-lg-3 gap-3">
             <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-
-            {/* About us dropdown */}
-            {/* <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                About Us
-              </a>
-              <ul className="dropdown-menu">
-                <li><Link className="dropdown-item" to="/terms">Terms & Conditions</Link></li>
-                <li><Link className="dropdown-item" to="/privacy">Privacy Policy</Link></li>
-                <li><Link className="dropdown-item" to="/faq">FAQ</Link></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><Link className="dropdown-item" to="/disclaimer">Disclaimer</Link></li>
-                <li><Link className="dropdown-item" to="/report-misuse">Report Misuse</Link></li>
-                <li><Link className="dropdown-item" to="/contact">Contact Us</Link></li>
-              </ul>
-            </li> */}
-             <li className="nav-item"><Link className="nav-link" to="/about">About Us</Link></li>
-
+            <li className="nav-item"><Link className="nav-link" to="/about">About Us</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/membership">Membership Plan</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/search">Search</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/matches">Your Matches</Link></li>
           </ul>
 

@@ -6,6 +6,14 @@ import { useDeleteProfile } from "../../../hooks/SettingsHook/useDeleteProfile";
 import { useAuthContext } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+import { AuthContext } from "../../../context/AuthContext.jsx";
+
+const WORD_LIMIT = 500;
+
+const countWords = (str) => {
+  return str.trim().split(/\s+/).filter(Boolean).length;
+};
+
 const DeleteProfile = () => {
 
   const navigate = useNavigate();
@@ -20,7 +28,7 @@ const DeleteProfile = () => {
   const [groomName, setGroomName] = useState("");
   const [story, setStory] = useState("");
   const [marriageDate, setMarriageDate] = useState("");
-  const [receiveGift, setReceiveGift] = useState(false);
+
 
   // OTHER REASON
   const [otherReason, setOtherReason] = useState("");
@@ -31,6 +39,7 @@ const DeleteProfile = () => {
   const [showOtherFinalReason, setShowOtherFinalReason] = useState(false);
 
   const [showConfirm, setShowConfirm] = useState(false);
+  const [receiveGift, setReceiveGift] = useState(false);
 
 
   const handleTopReasonClick = (value) => {
@@ -50,7 +59,7 @@ const DeleteProfile = () => {
       marriageDate,
       groomName,
       source,
-      receiveGift,
+
       story,
     };
 
@@ -205,18 +214,7 @@ const DeleteProfile = () => {
                   />
                 </div>
 
-                {/* Gift */}
-                <div className="form-check mb-3">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={receiveGift}
-                    onChange={(e) => setReceiveGift(e.target.checked)}
-                  />
-                  <label className="form-check-label">
-                    🎁 I would like to receive a gift from Snehabandh Matrimony
-                  </label>
-                </div>
+
 
                 {/* Story */}
                 <div className="mb-3">
@@ -226,8 +224,29 @@ const DeleteProfile = () => {
                     rows={4}
                     placeholder="Share your journey..."
                     value={story}
-                    onChange={(e) => setStory(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (countWords(val) <= WORD_LIMIT) {
+                        setStory(val);
+                      }
+                    }}
                   ></textarea>
+                  <small className="text-muted d-block text-end">
+                    {countWords(story)}/{WORD_LIMIT} words
+                  </small>
+                </div>
+
+                <div className="form-check mt-3 mb-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="giftCheckbox"
+                    checked={receiveGift}
+                    onChange={(e) => setReceiveGift(e.target.checked)}
+                  />
+                  <label className="form-check-label d-flex align-items-center gap-2" htmlFor="giftCheckbox">
+                    🎁 I would like to receive a gift from Snehabandh Matrimony
+                  </label>
                 </div>
 
                 <button
@@ -324,8 +343,16 @@ const DeleteProfile = () => {
                     rows={4}
                     placeholder="Share your journey..."
                     value={story}
-                    onChange={(e) => setStory(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (countWords(val) <= WORD_LIMIT) {
+                        setStory(val);
+                      }
+                    }}
                   />
+                  <small className="text-muted d-block text-end">
+                    {countWords(story)}/{WORD_LIMIT} words
+                  </small>
                 </div>
 
                 <button
@@ -362,8 +389,16 @@ const DeleteProfile = () => {
                     rows={3}
                     placeholder="Write your reason..."
                     value={otherReason}
-                    onChange={(e) => setOtherReason(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (countWords(val) <= WORD_LIMIT) {
+                        setOtherReason(val);
+                      }
+                    }}
                   ></textarea>
+                  <small className="text-muted d-block text-end">
+                    {countWords(otherReason)}/{WORD_LIMIT} words
+                  </small>
                 </div>
 
                 <button

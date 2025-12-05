@@ -4,7 +4,8 @@ import useConversation from "../zustand/useConversation";
 import { useAuthContext } from "../../../context/AuthContext.jsx";
 import profilrPicPlaceholder from "../../../assets/profileAvtar.jpg";
 
-const Conversation = ({ conversation, lastIdx }) => {
+const Conversation = ({ conversation, lastIdx }) => { 
+
   const {
     selectedConversation,
     setSelectedConversation,
@@ -24,8 +25,10 @@ const Conversation = ({ conversation, lastIdx }) => {
 
   const isOnline = onlineUsers.includes(conversation._id);
   const unreadCount = unread[conversation._id] || 0;
+  
 
   const handleClick = () => {
+
     setSelectedConversation(conversation);
     clearUnread(conversation._id);
 
@@ -37,7 +40,7 @@ const Conversation = ({ conversation, lastIdx }) => {
       });
     }
   };
-
+  
   const lastMsgText =
     conversation?.lastMessage ||
     conversation?.preview ||
@@ -161,7 +164,7 @@ const Conversation = ({ conversation, lastIdx }) => {
         {/* Avatar */}
         <div className="conv-avatar-wrap">
           <img
-            src={conversation.profilePic || profilrPicPlaceholder}
+            src={conversation.profilePhoto || profilrPicPlaceholder}
             alt="user avatar"
             className="conv-avatar"
           />

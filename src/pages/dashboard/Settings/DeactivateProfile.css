@@ -28,27 +28,87 @@
   font-size: 0.95rem;
 }
 
-
 /* Dropdown */
 .deactivate-select {
-  width: 260px;
-  padding: 10px 14px;
+  width: 100%;
+  max-width: 300px;
+  height: 50px;
+  padding: 0 18px;
   font-size: 0.95rem;
-  border: 1.5px solid #ccc;
-  border-radius: 6px;
-  background: #ffffff
-    url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e")
-    no-repeat right 12px center;
-  background-size: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 14px;
   appearance: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  color:#000;
+  transition: all 0.2s ease;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
 }
 
 .deactivate-select:focus {
   border-color: #d31027;
   outline: none;
-  box-shadow: 0 0 0 0.15rem rgba(211, 16, 39, 0.18);
+  box-shadow: 0 0 0 4px rgba(211, 16, 39, 0.12);
+}
+
+/* Inputs */
+.deactivate-input,
+.deactivate-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.deactivate-input {
+  height: 50px;
+}
+
+.deactivate-textarea {
+  resize: none;
+  line-height: 1.6;
+}
+
+.deactivate-input:focus,
+.deactivate-textarea:focus {
+  border-color: #d31027;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(211, 16, 39, 0.12);
+}
+
+/* Custom Scrollbar for Dropdown */
+.deactivate-select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.deactivate-select::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.deactivate-select::-webkit-scrollbar-thumb {
+  background: #d31027;
+  border-radius: 4px;
+}
+
+.deactivate-select::-webkit-scrollbar-thumb:hover {
+  background: #b00d20;
+}
+
+/* Force white background for options */
+.deactivate-select option {
+  background-color: #ffffff;
+  color: #333;
+  padding: 12px;
 }
 
 /* Button container */
@@ -58,12 +118,10 @@
 
 /* Gradient deactivate button */
 .btn-deactivate {
-  background-image: linear-gradient(
-    to right,
-    #d31027 0%,
-    #ea384d 51%,
-    #d31027 100%
-  );
+  background-image: linear-gradient(to right,
+      #d31027 0%,
+      #ea384d 51%,
+      #d31027 100%);
   background-size: 200% auto;
   color: #ffffff;
   border: none;

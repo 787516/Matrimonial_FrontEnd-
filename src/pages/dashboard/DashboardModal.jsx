@@ -46,7 +46,6 @@ const DashboardModal = ({
                                     <th>Photo</th>
                                     <th>Reg. ID</th>
                                     <th>Name</th>
-                                    <th>Age</th>
                                     <th>City</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -71,8 +70,6 @@ const DashboardModal = ({
                                         <td>{p.registrationId || "—"}</td>
 
                                         <td>{p.firstName} {p.lastName}</td>
-
-                                        <td>{p.age || "—"}</td>
 
                                         <td>{p.city || "—"}</td>
 
